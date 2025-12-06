@@ -1,0 +1,116 @@
+
+@import "tailwindcss";
+@plugin "daisyui"{
+  themes: black-purple --default, light-purple --prefersdark;
+};
+@plugin "daisyui/theme" {
+  name: "black-purple";
+  default: true;
+  prefersdark: true;
+  color-scheme: dark;
+
+  /* --- The Canvas (Blacks) --- */
+  /* base-100: Your main background. Almost pure black with a tiny hint of purple for richness */
+  --color-base-100: oklch(15% 0.01 280); 
+  /* base-200: Slightly lighter for cards/inputs */
+  --color-base-200: oklch(20% 0.01 280);
+  /* base-300: Darker/Deepest for footers or sidebars */
+  --color-base-300: oklch(10% 0.01 280);
+  /* base-content: Pure White text for maximum contrast on black */
+  --color-base-content: oklch(100% 0 0);
+
+  /* --- The Neons (Purples) --- */
+  /* Primary: Electric Purple for main buttons/links */
+  --color-primary: oklch(65% 0.25 290);
+  --color-primary-content: oklch(100% 0 0);
+
+  /* Secondary: Deep Indigo/Purple for borders and secondary buttons (as requested) */
+  --color-secondary: oklch(55% 0.22 270);
+  --color-secondary-content: oklch(100% 0 0);
+
+  /* Accent: Cyan to pop against the purple */
+  --color-accent: oklch(70% 0.19 200);
+  --color-accent-content: oklch(10% 0.1 200);
+
+  /* --- Functional Colors (Kept bright for visibility on black) --- */
+  --color-neutral: oklch(25% 0.02 280);
+  --color-neutral-content: oklch(100% 0 0);
+  
+  --color-info: oklch(70% 0.15 240);
+  --color-info-content: oklch(100% 0 0);
+  
+  --color-success: oklch(65% 0.2 140);
+  --color-success-content: oklch(10% 0.1 140);
+  
+  --color-warning: oklch(80% 0.15 80);
+  --color-warning-content: oklch(20% 0.1 80);
+  
+  --color-error: oklch(65% 0.2 30);
+  --color-error-content: oklch(100% 0 0);
+
+  /* --- Shape & Feel --- */
+  /* Sharp corners fit a "Tech/Dark" theme better than round ones */
+  --radius-selector: 0.5rem;
+  --radius-field: 0.3rem;
+  --radius-box: 0.5rem;
+
+  --border: 1px;
+  --depth: 0; /* Flat look */
+  --noise: 0;
+}
+
+@plugin "daisyui/theme" {
+  name: "light-purple";
+  default: false; /* Dark mode is your main default */
+  prefersdark: false;
+  color-scheme: light;
+
+  /* --- The Canvas (Whites) --- */
+  /* base-100: Crisp white with a tiny cool tint */
+  --color-base-100: oklch(98% 0.01 280);
+  /* base-200: Light Grey/Purple tint for cards to stand out from the white background */
+  --color-base-200: oklch(95% 0.02 280);
+  /* base-300: Slightly darker for footer/inputs */
+  --color-base-300: oklch(92% 0.03 280);
+  /* base-content: Deep charcoal text (not pitch black) for reading comfort */
+  --color-base-content: oklch(20% 0.05 280);
+
+  /* --- The Branding (Purples) --- */
+  /* Primary: Deep Royal Purple (High contrast against white) */
+  --color-primary: oklch(50% 0.25 280); 
+  --color-primary-content: oklch(98% 0.01 280); /* White text on purple button */
+
+  /* Secondary: Medium Purple for Borders/Outlines */
+  --color-secondary: oklch(60% 0.20 280);
+  --color-secondary-content: oklch(98% 0.01 280);
+
+  /* Accent: Darker Cyan (Teal) to be visible on white */
+  --color-accent: oklch(60% 0.18 200);
+  --color-accent-content: oklch(98% 0.01 200);
+
+  /* --- Functional Colors --- */
+  --color-neutral: oklch(30% 0.05 280);
+  --color-neutral-content: oklch(98% 0.01 280);
+
+  --color-info: oklch(60% 0.2 240);
+  --color-info-content: oklch(98% 0.01 240);
+
+  --color-success: oklch(60% 0.2 140);
+  --color-success-content: oklch(98% 0.01 140);
+
+  --color-warning: oklch(75% 0.2 80);
+  --color-warning-content: oklch(20% 0.05 80);
+
+  --color-error: oklch(60% 0.25 30);
+  --color-error-content: oklch(98% 0.01 30);
+
+  /* --- Shape Consistency --- */
+  /* Must match the dark theme for consistency */
+  --radius-selector: 0.5rem;
+  --radius-field: 0.3rem;
+  --radius-box: 0.5rem;
+
+  --border: 1px;
+  --depth: 1; /* Slight shadow for light mode to show depth */
+  --noise: 0;
+}
