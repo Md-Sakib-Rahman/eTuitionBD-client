@@ -3,8 +3,11 @@ import Logo from '../../../assets/Logo.png'
 import { Link } from 'react-router'
 import ThemeContoller from './themecontroller/ThemeContoller'
 import { ThemeContext } from '../../../Context/ThemeContextProvide'
+import { AuthContext } from '../../../Context/AuthContextProvider'
+import { img } from 'motion/react-client'
 
 const Navbar = () => {
+  const { userData } = useContext(AuthContext)
   const {theme} =useContext(ThemeContext)
   const navlinks = ["Home", "Tuitions", "Tutors", "About", "Contact"]
   return (
@@ -38,7 +41,10 @@ const Navbar = () => {
   </div>
   <div className="navbar-end flex items-center gap-4">
     <ThemeContoller/>
-    <a className="btn btn-primary max-md:btn-sm">Login</a>
+    {
+      userData ? (<img src={userData.photoURL} className='rounded-full border-2 border-accent w-10' />) : (<Link to="/login" className="btn btn-primary max-md:btn-sm">Login</Link>)
+    }
+    
   </div>
 </div>
   )
