@@ -1,12 +1,62 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import Logo from "../../../assets/Logo.png";
 import gradientBg from "../../../assets/Banner/Gradiant.png";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
+import { AuthContext } from "../../../Context/AuthContextProvider";
+import { useForm } from "react-hook-form";
 const Login = () => {
+  const { loginWithEmailPassword, signInWithGoogle, saveToDB, loader, setLoader } =
+    useContext(AuthContext);
+  const [loginError, setLoginError] = useState(false);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const state = location.state?.from?.pathname || "/";
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+  const handleFormLogin = (data) => {
+    console.log(data);
+    loginWithEmailPassword(data.email, data.password)
+      .then(() => {
+        console.log("user logged in");
+        setLoginError(false);
+        setError(null);
+        navigate(state, { replace: true });
+      })
+      .catch((err) => {
+        setLoader(false)
+        setLoginError(true);
+        setError("Credentials are incorrect");
+        console.log("test:", err);
+      });
+  };
+
+  const handleGoogleLogin = () => {
+    signInWithGoogle()
+      .then( async (result) => {
+        const token = await result.user.getIdToken();
+        saveToDB({
+          name: result.user.displayName,
+          email: result.user.email,
+          image: result.user.photoURL,
+          role: "student",
+        },token);
+        navigate(state, { replace: true });
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoader(false)
+      });
+  };
   return (
-    <div 
-    style={{ backgroundImage: `url(${gradientBg})` }}
-    className="hero bg-base-200 min-h-[700px] rounded-2xl bg-contain bg-no-repeat bg-start  mb-12">
+    <div
+      style={{ backgroundImage: `url(${gradientBg})` }}
+      className="hero bg-base-200 min-h-[700px] rounded-2xl bg-contain bg-no-repeat bg-start  mb-12"
+    >
       <div className="hero-content flex-col w-full ">
         <div className="flex items-center justify-center w-full mb-8">
           <div className="border-r-2 border-base-content/20 pr-6 h-[60px] flex flex-col justify-center items-end">
@@ -25,32 +75,61 @@ const Login = () => {
 
         <div className="card bg-base-100 w-[400px] max-sm:w-[300px] shrink-0 shadow-2xl">
           <div className="card-body">
-            <form className="fieldset">
+            <form onSubmit={handleSubmit(handleFormLogin)} className="fieldset">
               <label className="label">Email</label>
               <input
                 name="email"
                 type="email"
-                className="input"
+                {...register("email", { required: "Email is required" })}
+                className={`input w-full ${errors.email ? "input-error" : ""}`}
                 placeholder="Email"
               />
+              {errors.email && (
+                <span className="text-red-500 text-xs mt-1">
+                  {errors.email.message}
+                </span>
+              )}
               <label className="label">Password</label>
               <input
                 name="password"
                 type="password"
-                className="input"
+                {...register("password", { required: "password is required" })}
+                className={`input w-full ${errors.password ? "input-error" : ""}`}
                 placeholder="Password"
               />
+              {errors.password && (
+                <span className="text-red-500 text-xs mt-1">
+                  {errors.password.message}
+                </span>
+              )}
               <div>
                 <a className="link link-hover">Forgot password?</a>
               </div>
               <div>
-                <Link to="/register" className="link link-hover">
+                <Link state={location.state} to="/register" className="link link-hover">
                   Don't have an account?
                 </Link>
               </div>
-              <button className="btn btn-neutral mt-4">Login</button>
+              <div>
+                {loginError ? (
+                  <p className="text-red-600 text-center">{error}</p>
+                ) : (
+                  ""
+                )}
+              </div>
+              <button disabled={loader} type="submit" className="btn btn-neutral mt-4">
+
+                {
+                  loader ? (<span className="loading loading-spinner loading-md"></span>) : ("Login")
+                }
+
+              </button>
               <h2 className="text-center">OR</h2>
-              <button className="btn bg-base-200 hover:bg-base-100 text-base-content hover:border-[#e5e5e5]">
+              <button
+                onClick={handleGoogleLogin}
+                type="button"
+                className="btn bg-base-200 hover:bg-base-100 text-base-content hover:border-[#e5e5e5]"
+              >
                 <svg
                   aria-label="Google logo"
                   width="16"

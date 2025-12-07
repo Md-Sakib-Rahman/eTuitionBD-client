@@ -1,44 +1,110 @@
-import React, { createContext, use, useEffect, useState } from "react";
-import { GoogleAuthProvider, onAuthStateChanged, signInWithPopup } from "firebase/auth";
+import React, { createContext, useEffect, useState } from "react";
+import {
+  createUserWithEmailAndPassword,
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  signOut,
+  updateProfile,
+} from "firebase/auth";
 import auth from "../Firebase/firebase.config";
+import axios from "axios";
+import useAxiosPublic from "../AxiosInstance/AxiosPublicInstance";
 export const AuthContext = createContext(null);
 
 const AuthContextProvider = ({ children }) => {
-  const [userData, setUserData] = useState({});
-  const [loader, setLoader] = useState(false);
-
+  const [userData, setUserData] = useState(null);
+  const [loader, setLoader] = useState(true);
+  const axiosPublic = useAxiosPublic();  
   const provider = new GoogleAuthProvider();
 
   const signInWithGoogle = () => {
     setLoader(true);
     return signInWithPopup(auth, provider);
   };
-  const signUpWithEmailPassword = () => {
-    return;
+  const signUpWithEmailPassword = (email, password) => {
+    setLoader(true);
+    return createUserWithEmailAndPassword(auth, email, password);
   };
-  const loginWithEmailPassword = () => {
-    return;
+  const loginWithEmailPassword = (email, password) => {
+    setLoader(true);
+    return signInWithEmailAndPassword(auth, email, password);
   };
   const logout = () => {
-    return;
+    return signOut(auth);
   };
 
+  const updateUserProfile = (updatedData) => {
+    return updateProfile(auth.currentUser, updatedData);
+  };
+  const saveToDB = async (userInfo, token) => {
+    await axiosPublic
+      .post(`/users`, userInfo , {
+        
+         headers: {
+           authorization: `Bearer ${token}`
+         }
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        axios.post(`${import.meta.env.VITE_BACKEND_URL}/logout`, {}, { withCredentials: true })
+            .then(() => {
+                 setUserData(null);
+                 setLoader(false);
+            });
+        console.log(err);
+      });
+  };
   useEffect(() => {
-    const unsubscribe = () => {
-      setLoader(true);
-      onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
         if (user) {
-          setUserData(user)
-          const uid = user.uid;
-          setLoader(false);
+          setUserData(user);
+          setLoader(true);
+
+          user.getIdToken().then((token) => {
+            axios
+              .post(
+                `${import.meta.env.VITE_BACKEND_URL}/jwt`,
+                { email: user.email },
+                {
+                  withCredentials: true,
+                  headers: { authorization: `Bearer ${token}` },
+                }
+              )
+              .then(() => {
+                console.log("Token synced with backend");
+                setLoader(false);
+              })
+              .catch((err) => {
+                console.error("Token sync failed", err);
+                
+                setLoader(false);
+              });
+          });
+
           // ...
         } else {
-          setLoader(false);
+          axios.post(
+                `${import.meta.env.VITE_BACKEND_URL}/logout`, 
+                {}, 
+                { withCredentials: true }
+            ).then(() => {
+                setUserData(null);
+                setLoader(false);
+            }).catch(() => {
+                // Even if backend fails, clear frontend
+                setUserData(null);
+                setLoader(false);
+            });
         }
       });
-    };
 
-    return () => unsubscribe();
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   const data = {
@@ -47,8 +113,11 @@ const AuthContextProvider = ({ children }) => {
     signInWithGoogle,
     signUpWithEmailPassword,
     loginWithEmailPassword,
+    updateUserProfile,
     logout,
     loader,
+    setLoader,
+    saveToDB,
   };
 
   return <AuthContext.Provider value={data}>{children}</AuthContext.Provider>;

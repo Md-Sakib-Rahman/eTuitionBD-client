@@ -1,39 +1,117 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from "react";
 import Logo from "../../../assets/Logo.png";
-import { Link, useNavigate } from 'react-router';
-import gradientBg from '../../../assets/Banner/Gradiant.png';
-import { AuthContext } from '../../../Context/AuthContextProvider';
+import { Link, useLocation, useNavigate } from "react-router";
+import gradientBg from "../../../assets/Banner/Gradiant.png";
+import { AuthContext } from "../../../Context/AuthContextProvider";
+import { useForm } from "react-hook-form";
+import axios from "axios";
 const Register = () => {
-  const {userData, signInWithGoogle} = useContext(AuthContext)
-  const navigate = useNavigate()
-  const state = navigate?.state || "/"
+  const {
+    userData,
+    signInWithGoogle,
+    signUpWithEmailPassword,
+    updateUserProfile,
+    setUserData,
+    saveToDB,
+    loader,
+    setLoader,
+  } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const state = location.state?.from?.pathname || "/";
 
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+
+  const handleFormSignIn = async (data) => {
+    setLoader(true);
+    const { email, name, password, role, photoFile } = data;
+    //
+
+    const formData = new FormData();
+    formData.append("image", photoFile[0]);
+    try {
+      const imgbbRes = await axios.post(
+        import.meta.env.VITE_IMAGE_HOST,
+        formData
+      );
+      console.log(imgbbRes.data.data.display_url);
+      const imageUrl = imgbbRes.data.data.display_url;
+
+      const result = await signUpWithEmailPassword(email, password);
+      const user = result.user;
+      const token = await user.getIdToken();
+      await updateUserProfile({
+        displayName: name,
+        photoURL: imageUrl,
+      });
+      console.log("Profile Updated");
+      const userInfo = {
+        name: name,
+        email: email,
+        image: imageUrl,
+        role: role,
+      };
+      await saveToDB(userInfo, token);
+
+      setUserData({
+        ...user,
+        displayName: name,
+        photoURL: imageUrl,
+        role: role,
+      });
+      console.log("registration success!");
+      navigate(state);
+
+      // adasadada
+    } catch (err) {
+      console.log(err);
+      setLoader(false);
+    } finally {
+      setLoader(false);
+    }
+  };
   const handleGoogleSignIn = () => {
-    signInWithGoogle().then(()=>{
-      console.log(" Success Login! ")
-      navigate(state)
-    }).catch((err)=>{
-      console.log("the Erorr: ",err)
-    })
-  }
+    signInWithGoogle()
+      .then(async (result) => {
+        console.log(" Success Login! ", result);
+        const user = result.user;
+        const token = await user.getIdToken();
+        await saveToDB(
+          {
+            name: result.user.displayName,
+            email: result.user.email,
+            image: result.user.photoURL,
+            role: "student",
+          },
+          token
+        );
+        navigate(state);
+      })
+      .catch((err) => {
+        console.log("the Erorr: ", err);
+        setLoader(false)
+      });
+  };
 
-  if(userData?.uid){
-    navigate(state)
-  }
+  useEffect(() => {
+    if (userData?.uid) {
+      navigate(state, { replace: true });
+    }
+  }, [userData, navigate, state]);
 
   return (
-     <div 
-     style={{ backgroundImage: `url(${gradientBg})` }}
-     className="hero bg-base-200 min-h-[700px] rounded-2xl  mb-12 bg-contain bg-no-repeat bg-start">
-      <div 
-    
-      className="hero-content flex-col w-full ">
-        <div
-          
-        className="flex items-center justify-center w-full mb-8 ">
-          <div
-          
-          className="border-r-2 border-base-content/20 pr-6 h-[60px] flex flex-col justify-center items-end  ">
+    <div
+      style={{ backgroundImage: `url(${gradientBg})` }}
+      className="hero bg-base-200 min-h-[700px] rounded-2xl  mb-12 bg-contain bg-no-repeat bg-start"
+    >
+      <div className="hero-content flex-col w-full ">
+        <div className="flex items-center justify-center w-full mb-8 ">
+          <div className="border-r-2 border-base-content/20 pr-6 h-[60px] flex flex-col justify-center items-end  ">
             <h1 className="text-2xl font-bold text-right leading-tight text-base-content/70">
               Register <br />
               <span className="text-3xl text-primary">now!</span>
@@ -49,50 +127,99 @@ const Register = () => {
 
         <div className="card bg-base-100 w-[400px] max-sm:w-[300px] shrink-0 shadow-2xl">
           <div className="card-body">
-            <form className="fieldset">
+            <form
+              onSubmit={handleSubmit(handleFormSignIn)}
+              className="fieldset"
+            >
+              {/* --- NAME FIELD --- */}
               <label className="label">Name</label>
               <input
-                name="name"
                 type="text"
-                className="input"
-                placeholder="Email"
+                {...register("name", { required: "Name is required" })}
+                // 3. Add conditional class for red border
+                className={`input ${errors.name ? "input-error" : ""}`}
+                placeholder="Name"
               />
+
+              {/* 4. Display Error Message */}
+              {errors.name && (
+                <span className="text-red-500 text-xs mt-1">
+                  {errors.name.message}
+                </span>
+              )}
+
+              {/* --- ROLE FIELD --- */}
               <label className="label font-semibold mt-2">Register as:</label>
               <div className="flex gap-6 mb-2">
                 <label className="flex items-center gap-2 cursor-pointer">
-                    <input 
-                        type="radio" 
-                        name="role" 
-                        value="student" 
-                        className="radio radio-primary" 
-                        defaultChecked 
-                    />
-                    <span className="label-text">Student</span>
+                  <input
+                    type="radio"
+                    value="student"
+                    {...register("role", { required: "Please select a role" })}
+                    className="radio radio-primary"
+                    defaultChecked
+                  />
+                  <span className="label-text">Student</span>
                 </label>
                 <label className="flex items-center gap-2 cursor-pointer">
-                    <input 
-                        type="radio" 
-                        name="role" 
-                        value="tutor" 
-                        className="radio radio-primary" 
-                    />
-                    <span className="label-text">Tutor</span>
+                  <input
+                    type="radio"
+                    value="tutor"
+                    {...register("role", { required: "Please select a role" })}
+                    className="radio radio-primary"
+                  />
+                  <span className="label-text">Tutor</span>
                 </label>
               </div>
+              {errors.role && (
+                <span className="text-red-500 text-xs">
+                  {errors.role.message}
+                </span>
+              )}
+              <label className="label">Upload Photo:</label>
+              <input
+                {...register("photoFile", { required: "Photo is required" })}
+                type="file"
+                className="file-input file-input-md"
+              />
+              {errors.photoFile && (
+                <span className="text-red-500 text-xs mt-1">
+                  {errors.photoFile.message}
+                </span>
+              )}
+              {/* --- EMAIL FIELD --- */}
               <label className="label">Email</label>
               <input
-                name="email"
                 type="email"
-                className="input"
+                {...register("email", { required: "Email is required" })}
+                className={`input ${errors.email ? "input-error" : ""}`}
                 placeholder="Email"
               />
+              {errors.email && (
+                <span className="text-red-500 text-xs mt-1">
+                  {errors.email.message}
+                </span>
+              )}
+
+              {/* --- PASSWORD FIELD --- */}
               <label className="label">Password</label>
               <input
-                name="password"
                 type="password"
-                className="input"
+                {...register("password", {
+                  required: "Password is required",
+                  minLength: {
+                    value: 6,
+                    message: "Password must be 6 characters",
+                  },
+                })}
+                className={`input ${errors.password ? "input-error" : ""}`}
                 placeholder="Password"
               />
+              {errors.password && (
+                <span className="text-red-500 text-xs mt-1">
+                  {errors.password.message}
+                </span>
+              )}
               <div>
                 <a className="link link-hover">Forgot password?</a>
               </div>
@@ -101,9 +228,24 @@ const Register = () => {
                   Already have an account?
                 </Link>
               </div>
-              <button className="btn btn-neutral mt-4">Register</button>
+              <button
+                disabled={loader}
+                type="submit"
+                className="btn btn-neutral mt-4"
+              >
+                
+                {loader ? (
+                  <span className="loading loading-spinner loading-md"></span>
+                ) : (
+                  "Register"
+                )}
+              </button>
               <h2 className="text-center">OR</h2>
-              <button type="button" onClick={handleGoogleSignIn} className="btn bg-base-200 hover:bg-base-100 text-base-content hover:border-[#e5e5e5]">
+              <button
+                type="button"
+                onClick={handleGoogleSignIn}
+                className="btn bg-base-200 hover:bg-base-100 text-base-content hover:border-[#e5e5e5]"
+              >
                 <svg
                   aria-label="Google logo"
                   width="16"
@@ -138,7 +280,7 @@ const Register = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Register
+export default Register;
