@@ -4,12 +4,25 @@ import { Link } from "react-router";
 import ThemeContoller from "./themecontroller/ThemeContoller";
 import { ThemeContext } from "../../../Context/ThemeContextProvide";
 import { AuthContext } from "../../../Context/AuthContextProvider";
-import { div, img } from "motion/react-client";
+
 
 const Navbar = () => {
   const { userData, logout, setUserData, loader } = useContext(AuthContext);
-  console.log(userData)
   const { theme } = useContext(ThemeContext);
+  if(loader){
+    return <div className="min-h-screen flex justify-center items-center"><span className="loading loading-spinner"></span></div>;
+  }
+  let dashboardLink="/";
+  if(userData){
+    if(userData.role ==="student"){
+     dashboardLink="/student-dashboard";
+  }
+  else if (userData.role === "tutor") {
+     dashboardLink="/tutor-dashboard";
+  }
+  }
+  
+  
   const navlinks = ["Home", "Tuitions", "Tutors", "About", "Contact"];
   const LogUserOut = () => {
     logout().then(() => {
@@ -107,7 +120,7 @@ const Navbar = () => {
                 <h2>{userData.displayName}</h2>
               </li>
               <li>
-                <Link to="/dashboard" className="justify-between">
+                <Link to={dashboardLink} className="justify-between">
                   Dashboard
                   <span className="badge">New</span>
                 </Link>

@@ -13,7 +13,7 @@ import { Link } from "react-router";
 const StudentOverView = () => {
   const { userData, loader } = useContext(AuthContext);
 
-  // 1. Loading State
+  
   if (loader) {
     return (
       <div className="w-full h-[80vh] flex justify-center items-center">
@@ -22,17 +22,16 @@ const StudentOverView = () => {
     );
   }
 
-  // 2. Destructure Data (Safe fallback to empty object)
+  
   const { displayName, photoURL, email, role, studentData } = userData || {};
   
-  // 3. Check Logic: Is the profile actually incomplete?
-  // (Change this logic based on your specific needs later)
+ 
   const isProfileIncomplete = !studentData?.institute || !studentData?.grade;
 
   return (
     <div className="min-h-screen bg-base-100 p-6 md:p-10">
       
-      {/* --- HEADER --- */}
+      
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-base-content">
           Welcome back, <span className="text-primary">{displayName?.split(" ")[0]}!</span> 👋
@@ -40,7 +39,7 @@ const StudentOverView = () => {
         <p className="text-base-content/70 mt-1">Here is your academic overview.</p>
       </div>
 
-      {/* --- ALERT BANNER (Conditional) --- */}
+    
       {isProfileIncomplete && (
         <div className="alert alert-warning shadow-md mb-10 flex-col md:flex-row items-start md:items-center gap-4">
           <CgDanger className="text-3xl shrink-0" />
@@ -57,7 +56,6 @@ const StudentOverView = () => {
         </div>
       )}
 
-      {/* --- MAIN GRID --- */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         
         {/* LEFT COL: Profile Card */}
@@ -68,7 +66,7 @@ const StudentOverView = () => {
               {/* Avatar with Ring */}
               <div className="avatar mb-4">
                 <div className="w-28 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                  <img src={photoURL || "https://via.placeholder.com/150"} alt="Profile" />
+                  <img referrerPolicy="no-referrer" src={photoURL || "https://via.placeholder.com/150"} alt="Profile" />
                 </div>
               </div>
               
@@ -101,15 +99,15 @@ const StudentOverView = () => {
               </div>
 
               <div className="card-actions w-full mt-6">
-                <button className="btn btn-primary w-full gap-2">
+                <Link to="/student-dashboard/profile" className="btn btn-primary w-full gap-2">
                     <FaEdit /> Edit Profile
-                </button>
+                </Link>
               </div>
             </div>
           </div>
         </div>
 
-        {/* RIGHT COL: Details & Stats */}
+        {/*  Details & Stats */}
         <div className="lg:col-span-2 flex flex-col justify-between gap-8 lg:h-[500px]  pb-5">
           
           {/* Academic Information Card */}

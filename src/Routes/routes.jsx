@@ -6,6 +6,11 @@ import Register from "../Pages/Auth/Register/Register";
 import StudentDashboardLayout from "../Layouts/StudentDashboardLayout";
 import StudentOverView from "../Pages/Dashboard/student-dashboard/StudentOverView";
 import StudentUpdateProfile from "../Pages/Dashboard/student-dashboard/StudentUpdateProfile";
+import StudentDashboardRoutes from "./StudentDashboardRoutes";
+import TutorDashboardLayout from "../Layouts/TutorDashboardLayout";
+import TutorDashboardRoutes from "./TutorDashboardRoutes";
+import TutorOverView from "../Pages/Dashboard/tutor-dashboard/TutorOverView";
+import TutorUpdateProfile from "../Pages/Dashboard/tutor-dashboard/TutorUpdateProfile";
 
 const router = createBrowserRouter([
   {
@@ -28,7 +33,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/student-dashboard",
-    element: <StudentDashboardLayout/>,
+    element: <StudentDashboardRoutes><StudentDashboardLayout/></StudentDashboardRoutes>,
     
     children: [
       {
@@ -40,6 +45,21 @@ const router = createBrowserRouter([
         element: <StudentUpdateProfile/>,
       },
     ],
+  },
+  {
+    path: "/tutor-dashboard",
+    element: <TutorDashboardRoutes><TutorDashboardLayout/></TutorDashboardRoutes>,
+    children: [
+      {
+        path: "/tutor-dashboard",
+        element: <TutorOverView/>,
+      },
+      {
+        path: "/tutor-dashboard/profile",
+        element: <TutorUpdateProfile/>,
+      }
+    ],
+    
   }
 ]);
 export default router;

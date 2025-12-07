@@ -75,8 +75,21 @@ const AuthContextProvider = ({ children }) => {
                 }
               )
               .then(() => {
-                console.log("Token synced with backend");
-                setLoader(false);
+                axios.get(`${import.meta.env.VITE_BACKEND_URL}/my-user`, { withCredentials: true })
+                .then((res) => {
+                    
+                    const fullUserData = {
+                        ...user, 
+                        ...res.data     
+                    };
+                    
+                    setUserData(fullUserData);
+                    setLoader(false);  
+                })
+                .catch((err) => {
+                    console.error("Failed to fetch user data:", err);
+                    setLoader(false);
+                });
               })
               .catch((err) => {
                 console.error("Token sync failed", err);
@@ -95,7 +108,7 @@ const AuthContextProvider = ({ children }) => {
                 setUserData(null);
                 setLoader(false);
             }).catch(() => {
-                // Even if backend fails, clear frontend
+                
                 setUserData(null);
                 setLoader(false);
             });

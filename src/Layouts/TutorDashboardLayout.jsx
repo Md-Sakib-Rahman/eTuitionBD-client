@@ -2,7 +2,7 @@ import React from "react";
 import { Link, NavLink, Outlet } from "react-router";
 import ThemeController from "../Pages/Shared/Navbar/themecontroller/ThemeContoller";
 import { GrOverview } from "react-icons/gr";
-const StudentDashboardLayout = () => {
+const TutorDashboardLayout = () => {
   return (
     <div className="drawer lg:drawer-open">
       <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
@@ -35,7 +35,7 @@ const StudentDashboardLayout = () => {
               eTuition<span className="text-primary">BD</span>
             </h2>
             <div className="h-5 w-1 bg-base-content"></div>
-            <h2 className="font-bold max-md:text-sm">Student Dashboard</h2>
+            <h2 className="font-bold max-md:text-sm">Tutor Dashboard</h2>
           </div>
           <div className="navbar-end flex justify-end items-end w-full pr-10">
             <ThemeController></ThemeController>
@@ -80,7 +80,7 @@ const StudentDashboardLayout = () => {
             </li>
             <li>
               <NavLink
-                to="/student-dashboard"
+                to="/tutor-dashboard"
                 end
                 className={({ isActive }) =>
                   `is-drawer-close:tooltip is-drawer-close:tooltip-right ${
@@ -101,4 +101,4 @@ const StudentDashboardLayout = () => {
   );
 };
 
-export default StudentDashboardLayout;
+export default TutorDashboardLayout;
