@@ -11,6 +11,12 @@ import TutorDashboardLayout from "../Layouts/TutorDashboardLayout";
 import TutorDashboardRoutes from "./TutorDashboardRoutes";
 import TutorOverView from "../Pages/Dashboard/tutor-dashboard/TutorOverView";
 import TutorUpdateProfile from "../Pages/Dashboard/tutor-dashboard/TutorUpdateProfile";
+import StudentTuitionPosts from "../Pages/Dashboard/student-dashboard/StudentTuitionPosts";
+import PostJob from "../Pages/Dashboard/student-dashboard/PostJob";
+import PostDetails from "../Pages/ViewPostDetails/PostDetails";
+import EditPost from "../Pages/Dashboard/student-dashboard/EditPost";
+import Tuitions from "../Pages/TutionsPage/Tuitions";
+import CommonPrivateRoutes from "./CommonPrivateRoutes";
 
 const router = createBrowserRouter([
   {
@@ -29,6 +35,14 @@ const router = createBrowserRouter([
         path: "/register",
         element: <Register/>,
       },
+      {
+        path: "/post-details/:id",
+        element: <CommonPrivateRoutes> <PostDetails/> </CommonPrivateRoutes>,
+      },
+      {
+        path: "/tuitions",
+        element: <Tuitions/>,
+      },
     ],
   },
   {
@@ -43,6 +57,24 @@ const router = createBrowserRouter([
       {
         path: "/student-dashboard/profile",
         element: <StudentUpdateProfile/>,
+      },
+      {
+        path: "/student-dashboard/studenttuitionposts",
+        element: <StudentTuitionPosts/>,
+      },
+      {
+        path: "/student-dashboard/post-job",
+        element: <PostJob/>,
+      },
+      {
+        path: "/student-dashboard/post-details/:id",
+        element: <PostDetails/>,
+
+      },
+      {
+        path: "/student-dashboard/edit-post/:id",
+        element: <EditPost/>,
+
       },
     ],
   },

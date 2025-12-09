@@ -2,6 +2,7 @@ import React from "react";
 import { Link, NavLink, Outlet } from "react-router";
 import ThemeController from "../Pages/Shared/Navbar/themecontroller/ThemeContoller";
 import { GrOverview } from "react-icons/gr";
+import { GrDocumentSound } from "react-icons/gr";
 const StudentDashboardLayout = () => {
   return (
     <div className="drawer lg:drawer-open">
@@ -91,6 +92,22 @@ const StudentDashboardLayout = () => {
               >
                 {/* Home icon */}
                 <GrOverview />
+                <span className="is-drawer-close:hidden">OverView</span>
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/student-dashboard/studenttuitionposts"
+                end
+                className={({ isActive }) =>
+                  `is-drawer-close:tooltip is-drawer-close:tooltip-right ${
+                    isActive ? "bg-primary text-primary-content" : "" // Active Styles
+                  }`
+                }
+                data-tip="Homepage"
+              >
+                {/* Home icon */}
+                <GrDocumentSound />
                 <span className="is-drawer-close:hidden">OverView</span>
               </NavLink>
             </li>
