@@ -17,6 +17,12 @@ import PostDetails from "../Pages/ViewPostDetails/PostDetails";
 import EditPost from "../Pages/Dashboard/student-dashboard/EditPost";
 import Tuitions from "../Pages/TutionsPage/Tuitions";
 import CommonPrivateRoutes from "./CommonPrivateRoutes";
+import AdminDashboardLayout from "../Layouts/AdminDashboardLayout";
+import AdminDashboardRoutes from "./AdminDashboardRoutes";
+import UserManagement from "../Pages/Dashboard/admin-dashboard/UserManagement";
+import AdminUserOverview from "../Pages/Dashboard/admin-dashboard/AdminUserOverview";
+import TutionManagement from "../Pages/Dashboard/admin-dashboard/TutionManagement";
+import AdminTuitionOverview from "../Pages/Dashboard/admin-dashboard/AdminTuitionOverview";
 
 const router = createBrowserRouter([
   {
@@ -90,6 +96,30 @@ const router = createBrowserRouter([
         path: "/tutor-dashboard/profile",
         element: <TutorUpdateProfile/>,
       }
+    ],
+    
+  },
+  {
+    path: "/admin-dashboard",
+    element: <AdminDashboardRoutes> <AdminDashboardLayout/> </AdminDashboardRoutes>,
+    children: [
+      {
+        path: "/admin-dashboard",
+        element: <UserManagement/>,
+      },
+      {
+        path: "/admin-dashboard/admin-user-overview/:id",
+        element: <AdminUserOverview/>,
+      },
+      {
+        path: "/admin-dashboard/tuition-management",
+        element: <TutionManagement/>,
+      },
+      {
+        path: "/admin-dashboard/admin-tuition-overview/:id",
+        element: <AdminTuitionOverview/>,
+      },
+      
     ],
     
   }

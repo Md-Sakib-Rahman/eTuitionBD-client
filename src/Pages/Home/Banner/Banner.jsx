@@ -9,9 +9,8 @@ const Banner = () => {
     visible: {
       opacity: 1,
       transition: {
-        // staggerChildren: Controls the speed of typing (0.1s per letter)
         staggerChildren: 0.05,
-        delayChildren: 0.3, // Short wait before typing starts
+        delayChildren: 0.3, 
       },
     },
   };
@@ -19,8 +18,6 @@ const Banner = () => {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      // duration: 0 makes it appear instantly (like a typewriter key hit)
-      // If you want a "fade" effect, change this to 0.5
       transition: { duration: 0 },
     },
   };

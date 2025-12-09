@@ -55,7 +55,7 @@ const Login = () => {
   return (
     <div
       style={{ backgroundImage: `url(${gradientBg})` }}
-      className="hero bg-base-200 min-h-[700px] rounded-2xl bg-contain bg-no-repeat bg-start  mb-12"
+      className={`${loader ? "hidden" : ""} hero bg-base-200 min-h-[700px] rounded-2xl bg-contain bg-no-repeat bg-start  mb-12`}
     >
       <div className="hero-content flex-col w-full ">
         <div className="flex items-center justify-center w-full mb-8">

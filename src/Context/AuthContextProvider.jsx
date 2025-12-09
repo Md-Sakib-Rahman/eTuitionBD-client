@@ -24,7 +24,7 @@ const AuthContextProvider = ({ children }) => {
     return signInWithPopup(auth, provider);
   };
   const signUpWithEmailPassword = (email, password) => {
-    setLoader(true);
+    
     return createUserWithEmailAndPassword(auth, email, password);
   };
   const loginWithEmailPassword = (email, password) => {
@@ -80,7 +80,8 @@ const AuthContextProvider = ({ children }) => {
                     
                     const fullUserData = {
                         ...user, 
-                        ...res.data     
+                        ...res.data,
+                        displayName: res.data.name || user.displayName,     
                     };
                     
                     setUserData(fullUserData);

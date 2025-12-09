@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { AuthContext } from '../../../Context/AuthContextProvider'
 
 const Footer = () => {
+  const {loader} = useContext(AuthContext)
   return (
-    <footer className="footer rounded-2xl sm:footer-horizontal bg-base-200 text-base-content p-10 w-[90%] mx-auto">
+    <footer className={`footer rounded-2xl sm:footer-horizontal bg-base-200 text-base-content p-10 w-[90%] mx-auto ${loader ? "hidden" : ""}`}>
   <aside>
     <svg
       width="50"

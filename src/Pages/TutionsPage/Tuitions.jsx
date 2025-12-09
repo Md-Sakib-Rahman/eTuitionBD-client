@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FaSearch } from "react-icons/fa";
-import TuitionCard from "./TuitionCard/TuitionCard.jsx"; // Import the card component
+import TuitionCard from "./TuitionCard/TuitionCard.jsx"; 
 
 const Tuitions = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   
-  // Logic States
+ 
   const [searchTerm, setSearchTerm] = useState("");
-  const [sortOrder, setSortOrder] = useState("newest"); // 'newest', 'asc', 'desc'
+  const [sortOrder, setSortOrder] = useState("newest"); 
 
-  // Pagination States
+  
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 6;
 
@@ -29,25 +29,25 @@ const Tuitions = () => {
     fetchPosts();
   }, []);
 
-  // --- 1. FILTER LOGIC (Subject Only) ---
+  
   const filteredPosts = posts.filter((post) => {
     if (!searchTerm) return true;
     return post.subject.toLowerCase().includes(searchTerm.toLowerCase());
   });
 
-  // --- 2. SORT LOGIC ---
+ 
   const sortedPosts = [...filteredPosts].sort((a, b) => {
     if (sortOrder === "newest") {
       return new Date(b.createdAt) - new Date(a.createdAt);
     } else if (sortOrder === "asc") {
-      return a.budget - b.budget; // Low to High
+      return a.budget - b.budget; 
     } else if (sortOrder === "desc") {
-      return b.budget - a.budget; // High to Low
+      return b.budget - a.budget; 
     }
     return 0;
   });
 
-  // --- 3. PAGINATION LOGIC ---
+ 
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = sortedPosts.slice(indexOfFirstPost, indexOfLastPost);

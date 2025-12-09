@@ -8,13 +8,14 @@ import toast from "react-hot-toast";
 const PostDetails = () => {
   const { id } = useParams();
   const { userData } = useContext(AuthContext);
+  console.log(userData)
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
 
   const [post, setPost] = useState(null);
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(true);
-
+   const [hasApplied, setHasApplied] = useState(false); 
 
   const isAuthor = userData?.uid && post?.studentId?._id === userData?._id;
   const isTutor = userData?.role === 'tutor';
@@ -30,6 +31,9 @@ const PostDetails = () => {
         if (userData?.email === res.data.studentId?.email) {
             fetchApplications();
         }
+        if (userData?.role === 'tutor') {
+            checkApplicationStatus();
+        }
       } catch (err) {
         console.error(err);
       } finally {
@@ -40,7 +44,18 @@ const PostDetails = () => {
     if (userData) fetchPost();
   }, [id, userData, axiosSecure]);
 
- 
+ const checkApplicationStatus = async () => {
+      try {
+          const res = await axiosSecure.get(`/posts/${id}/check-application`);
+          setHasApplied(res.data.hasApplied);
+      } catch (err) {
+          console.error("Failed to check status", err);
+      }
+  };
+
+  
+
+
   const fetchApplications = async () => {
       try {
           const res = await axiosSecure.get(`/posts/${id}/applications`);
@@ -52,10 +67,15 @@ const PostDetails = () => {
 
   
   const handleApply = async () => {
+    console.log("inside Apply")
       try {
+        console.log("inside try before fetch")
           await axiosSecure.post('/apply-job', { postId: id });
+          console.log("inside try after fetch")
           toast.success("Applied successfully!");
+          setHasApplied(true);
       } catch(err) {
+        console.log(err)
           toast.error(err.response?.data?.message || "Failed to apply");
       }
   };
@@ -262,9 +282,9 @@ const PostDetails = () => {
                             onClick={handleApply}
                             className="btn btn-primary w-full text-lg"
                             
-                            disabled={post.status !== 'approved'}
+                            disabled={userData.status !== 'active' || hasApplied}
                         >
-                            {post.status === 'pending' ? "Pending Approval" : "Apply Now"}
+                            {userData.status === 'pending' ? "Pending Approval" : "Apply Now"}
                         </button>
                     ) : !isAuthor ? (
                         <div className="alert alert-info text-sm">

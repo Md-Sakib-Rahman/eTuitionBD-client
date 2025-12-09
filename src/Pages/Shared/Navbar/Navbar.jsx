@@ -6,13 +6,16 @@ import { ThemeContext } from "../../../Context/ThemeContextProvide";
 import { AuthContext } from "../../../Context/AuthContextProvider";
 
 const Navbar = () => {
-  const { userData, logout, setUserData, loader } = useContext(AuthContext);
+  const { userData, logout, setUserData, loader, setLoader } = useContext(AuthContext);
   const { theme } = useContext(ThemeContext);
 
   if (loader) {
     return (
       <div className="min-h-screen flex justify-center items-center">
-        <span className="loading loading-spinner"></span>
+        <div className="text-center" >
+          <span className="loading loading-spinner"></span>
+        <h2 className="font-bold">Please Wait.. we are checking the System</h2>
+        </div>
       </div>
     );
   }
@@ -23,6 +26,8 @@ const Navbar = () => {
       dashboardLink = "/student-dashboard";
     } else if (userData.role === "tutor") {
       dashboardLink = "/tutor-dashboard";
+    }else if (userData.role === "admin") {
+      dashboardLink = "/admin-dashboard";
     }
   }
 
@@ -46,7 +51,7 @@ const Navbar = () => {
     <div
       className={`navbar max-md:px-4 shadow-sm ${
         theme == "black-purple" ? "bg-gray-900" : "bg-white"
-      } rounded-2xl px-10 w-[90%] mx-auto fixed top-0 right-0 left-0 mt-2 z-10`}
+      }   rounded-2xl px-10 w-[90%] mx-auto fixed top-0 right-0 left-0 mt-2 z-10 `}
     >
       <div className="navbar-start">
         <div className="dropdown">
