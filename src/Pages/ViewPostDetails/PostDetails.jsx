@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router";
-import { FaMapMarkerAlt, FaClock, FaMoneyBillWave, FaEdit, FaTrash } from "react-icons/fa";
+import { FaMapMarkerAlt, FaClock, FaMoneyBillWave, FaEdit, FaTrash, FaTimes, FaCheck } from "react-icons/fa";
 import { AuthContext } from "../../Context/AuthContextProvider";
 import useAxiosSecure from "../../AxiosInstance/AxiosSecureInstance";
 import toast from "react-hot-toast";
@@ -8,25 +8,23 @@ import toast from "react-hot-toast";
 const PostDetails = () => {
   const { id } = useParams();
   const { userData } = useContext(AuthContext);
-  console.log(userData)
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
 
   const [post, setPost] = useState(null);
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(true);
-   const [hasApplied, setHasApplied] = useState(false); 
+  
+  const [applicationStatus, setApplicationStatus] = useState(null); 
 
   const isAuthor = userData?.uid && post?.studentId?._id === userData?._id;
   const isTutor = userData?.role === 'tutor';
-
 
   useEffect(() => {
     const fetchPost = async () => {
       try {
         const res = await axiosSecure.get(`/posts/${id}`);
         setPost(res.data);
-        
         
         if (userData?.email === res.data.studentId?.email) {
             fetchApplications();
@@ -44,17 +42,18 @@ const PostDetails = () => {
     if (userData) fetchPost();
   }, [id, userData, axiosSecure]);
 
- const checkApplicationStatus = async () => {
+  const checkApplicationStatus = async () => {
       try {
           const res = await axiosSecure.get(`/posts/${id}/check-application`);
-          setHasApplied(res.data.hasApplied);
+          if (res.data.hasApplied) {
+              setApplicationStatus(res.data.status); // e.g., 'pending', 'rejected'
+          } else {
+              setApplicationStatus(null);
+          }
       } catch (err) {
           console.error("Failed to check status", err);
       }
   };
-
-  
-
 
   const fetchApplications = async () => {
       try {
@@ -65,25 +64,34 @@ const PostDetails = () => {
       }
   };
 
-  
   const handleApply = async () => {
-    console.log("inside Apply")
       try {
-        console.log("inside try before fetch")
           await axiosSecure.post('/apply-job', { postId: id });
-          console.log("inside try after fetch")
           toast.success("Applied successfully!");
-          setHasApplied(true);
+          setApplicationStatus('pending'); 
       } catch(err) {
-        console.log(err)
           toast.error(err.response?.data?.message || "Failed to apply");
       }
   };
-
+  
+  
+  const handleRejectTutor = async (appId) => {
+    if(!window.confirm("Are you sure you want to reject this tutor?")) return;
+    try {
+        const res = await axiosSecure.patch(`/applications/${appId}/reject`);
+        if(res.data.success) {
+            toast.success("Application Rejected");
+            setApplications(prev => prev.map(app => 
+                app._id === appId ? { ...app, status: 'rejected' } : app
+            ));
+        }
+    } catch (err) {
+        toast.error("Failed to reject application");
+    }
+  };
   const handleConfirmTutor = async (applicationId) => {
       toast.success("Tutor Confirmed! Redirecting to payment...");
   };
-
   const handleDelete = async () => {
     if(window.confirm("Are you sure you want to delete this post? This cannot be undone.")) {
         try {
@@ -93,31 +101,23 @@ const PostDetails = () => {
                 navigate("/student-dashboard/studenttuitionposts"); 
             }
         } catch (err) {
-            console.error(err);
             toast.error(err.response?.data?.message || "Failed to delete post");
         }
     }
   };
 
-  if (loading) return (
-    <div className="flex justify-center h-screen items-center">
-        <span className="loading loading-spinner loading-lg text-primary"></span>
-    </div>
-  );
-  
+  if (loading) return <div className="flex justify-center h-screen items-center"><span className="loading loading-spinner loading-lg text-primary"></span></div>;
   if (!post) return <div className="text-center mt-20 text-xl font-bold">Post not found</div>;
-
 
   const student = post.studentId || {};
 
   return (
     <div className="min-h-screen bg-base-100 p-6 md:p-10 max-w-6xl mx-auto mt-16">
       
-    
+      
       <div className="flex flex-col md:flex-row justify-between items-start gap-4 mb-8">
         <div>
             <div className="flex items-center gap-2 mb-2">
-               
                 <span className={`badge ${
                     post.status === 'approved' ? 'badge-success' : 
                     post.status === 'pending' ? 'badge-warning' : 'badge-ghost'
@@ -133,8 +133,6 @@ const PostDetails = () => {
                 for {post.classGrade} ({post.medium})
             </p>
         </div>
-
-      
         {isAuthor && (
             <div className="flex gap-2">
                 <Link to={`/student-dashboard/edit-post/${post._id}`} className="btn btn-outline btn-primary gap-2">
@@ -149,38 +147,26 @@ const PostDetails = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         
-        
+      
         <div className="lg:col-span-2 space-y-6">
-            
-           
             <div className="card bg-base-200 shadow-sm">
                 <div className="card-body">
-                    
-                  
                     <h3 className="font-bold text-lg mb-2">Student Info:</h3>
                     <div className="flex items-center gap-4 mb-4">
                         <div className="avatar">
                             <div className="w-12 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                                <img 
-                                    src={student.image || "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"} 
-                                    alt="Student" 
-                                    referrerPolicy="no-referrer"
-                                />
+                                <img src={student.image || "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"} alt="Student" referrerPolicy="no-referrer" />
                             </div>
                         </div>
                         <div className="flex flex-col">
-                            {/* Live Name from User Collection */}
                             <p className="font-bold text-lg">{student.name || "Unknown Student"}</p>
                             <div className="flex items-center gap-1 text-sm text-base-content/70">
                                 <FaMapMarkerAlt className="text-error" />
-                                {/* Job location preference */}
                                 {post.area}, {post.district}
                             </div>
                         </div>
                     </div>
-
                     <div className="divider"></div>
-
                     <h3 className="font-bold text-lg mb-2">Description</h3>
                     <p className="whitespace-pre-line text-base-content/80">
                         {post.description || "No additional description provided."}
@@ -188,19 +174,13 @@ const PostDetails = () => {
                 </div>
             </div>
 
-          
             {isAuthor && (
                 <div className="card bg-base-100 border-2 border-primary/20 shadow-lg mt-10">
                     <div className="card-body">
-                        <h3 className="card-title text-primary">
-                            Applicants ({applications.length})
-                        </h3>
-                        <p className="text-sm text-base-content/60 mb-4">Tutors who have applied for this job.</p>
-
+                        <h3 className="card-title text-primary">Applicants ({applications.length})</h3>
+                     
                         {applications.length === 0 ? (
-                            <div className="text-center py-6 bg-base-200 rounded-lg">
-                                No applicants yet.
-                            </div>
+                            <div className="text-center py-6 bg-base-200 rounded-lg">No applicants yet.</div>
                         ) : (
                             <div className="overflow-x-auto">
                                 <table className="table">
@@ -208,12 +188,12 @@ const PostDetails = () => {
                                         <tr>
                                             <th>Tutor</th>
                                             <th>Ratings</th>
-                                            <th>Action</th>
+                                            <th className="text-center">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {applications.map((app) => (
-                                            <tr key={app._id}>
+                                            <tr key={app._id} className={app.status === 'rejected' ? 'opacity-50 bg-base-200' : ''}>
                                                 <td>
                                                     <div className="flex items-center gap-3">
                                                         <div className="avatar">
@@ -224,19 +204,20 @@ const PostDetails = () => {
                                                         <div>
                                                             <div className="font-bold">{app.tutorId?.name || "Unknown"}</div>
                                                             <div className="text-sm opacity-50">{app.tutorId?.email}</div>
+                                                            {app.status === 'rejected' && <span className="badge badge-error badge-xs text-white mt-1">Rejected</span>}
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td>
-                                                    ⭐ {app.tutorId?.tutorData?.averageRating || "New"}
-                                                </td>
-                                                <th>
-                                                    <button 
-                                                        onClick={() => handleConfirmTutor(app._id)}
-                                                        className="btn btn-primary btn-xs"
-                                                    >
-                                                        Confirm & Hire
-                                                    </button>
+                                                <td>⭐ {app.tutorId?.tutorData?.averageRating || "New"}</td>
+                                                <th className="text-center">
+                                                    {app.status === 'pending' ? (
+                                                        <div className="flex flex-col md:flex-row gap-2 justify-center">
+                                                            <button onClick={() => handleConfirmTutor(app._id)} className="btn btn-success btn-xs text-white"><FaCheck /> Hire</button>
+                                                            <button onClick={() => handleRejectTutor(app._id)} className="btn btn-error btn-xs text-white"><FaTimes /> Reject</button>
+                                                        </div>
+                                                    ) : (
+                                                        <span className="text-xs font-semibold uppercase">{app.status}</span>
+                                                    )}
                                                 </th>
                                             </tr>
                                         ))}
@@ -249,46 +230,53 @@ const PostDetails = () => {
             )}
         </div>
 
-       
+    
         <div className="lg:col-span-1">
             <div className="card bg-base-100 shadow-xl border border-base-300 sticky top-24">
                 <div className="card-body">
                     <h3 className="text-lg font-bold text-base-content/60">Job Summary</h3>
                     
                     <div className="flex items-center gap-3 mt-4">
-                        <div className="p-3 bg-green-100 text-green-600 rounded-lg">
-                            <FaMoneyBillWave className="text-xl" />
-                        </div>
+                        <FaMoneyBillWave className="text-xl text-green-600" />
                         <div>
                             <p className="text-xs font-bold uppercase text-base-content/50">Budget</p>
                             <p className="text-2xl font-bold">{post.budget} USD</p>
                         </div>
                     </div>
-
                     <div className="flex items-center gap-3 mt-4">
-                        <div className="p-3 bg-blue-100 text-blue-600 rounded-lg">
-                            <FaClock className="text-xl" />
-                        </div>
+                        <FaClock className="text-xl text-blue-600" />
                         <div>
                             <p className="text-xs font-bold uppercase text-base-content/50">Duration</p>
                             <p className="text-xl font-bold">{post.duration} Hours</p>
                         </div>
                     </div>
-
                     <div className="divider"></div>
 
                     {isTutor ? (
                         <button 
                             onClick={handleApply}
-                            className="btn btn-primary w-full text-lg"
+                            className={`btn w-full text-lg ${
+                                applicationStatus === 'rejected' ? 'bg-red-700 text-base-content' : 'btn-primary'
+                            }`}
                             
-                            disabled={userData.status !== 'active' || hasApplied}
+                           
+                            disabled={
+                                userData.status !== 'active' || 
+                                applicationStatus !== null 
+                            }
                         >
-                            {userData.status === 'pending' ? "Pending Approval" : "Apply Now"}
+                            {userData.status === 'pending' 
+                                ? "Account Pending Approval" 
+                                : applicationStatus === 'rejected' 
+                                    ? "Application Rejected" 
+                                    : applicationStatus 
+                                        ? "Already Applied" 
+                                        : "Apply Now"
+                            }
                         </button>
                     ) : !isAuthor ? (
                         <div className="alert alert-info text-sm">
-                            Log in as a Tutor to apply.
+                            Only Tutors can to apply.
                         </div>
                     ) : null}
 

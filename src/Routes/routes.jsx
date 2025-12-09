@@ -23,6 +23,7 @@ import UserManagement from "../Pages/Dashboard/admin-dashboard/UserManagement";
 import AdminUserOverview from "../Pages/Dashboard/admin-dashboard/AdminUserOverview";
 import TutionManagement from "../Pages/Dashboard/admin-dashboard/TutionManagement";
 import AdminTuitionOverview from "../Pages/Dashboard/admin-dashboard/AdminTuitionOverview";
+import MyApplications from "../Pages/Dashboard/tutor-dashboard/MyApplications";
 
 const router = createBrowserRouter([
   {
@@ -95,6 +96,10 @@ const router = createBrowserRouter([
       {
         path: "/tutor-dashboard/profile",
         element: <TutorUpdateProfile/>,
+      },
+      {
+        path: "/tutor-dashboard/my-application",
+        element: <MyApplications/>,
       }
     ],
     
