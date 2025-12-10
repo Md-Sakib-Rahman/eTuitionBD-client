@@ -3,6 +3,7 @@ import { Link, NavLink, Outlet } from "react-router";
 import ThemeController from "../Pages/Shared/Navbar/themecontroller/ThemeContoller";
 import { GrOverview } from "react-icons/gr";
 import { GrDocumentSound } from "react-icons/gr";
+import { MdConnectWithoutContact } from "react-icons/md";
 const StudentDashboardLayout = () => {
   return (
     <div className="drawer lg:drawer-open">
@@ -62,7 +63,7 @@ const StudentDashboardLayout = () => {
                 className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                 data-tip="Homepage"
               >
-                {/* Home icon */}
+               
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -88,9 +89,9 @@ const StudentDashboardLayout = () => {
                     isActive ? "bg-primary text-primary-content" : "" // Active Styles
                   }`
                 }
-                data-tip="Homepage"
+                data-tip="OverView"
               >
-                {/* Home icon */}
+               
                 <GrOverview />
                 <span className="is-drawer-close:hidden">OverView</span>
               </NavLink>
@@ -104,11 +105,27 @@ const StudentDashboardLayout = () => {
                     isActive ? "bg-primary text-primary-content" : "" // Active Styles
                   }`
                 }
-                data-tip="Homepage"
+                data-tip="Posts"
               >
-                {/* Home icon */}
+               
                 <GrDocumentSound />
-                <span className="is-drawer-close:hidden">OverView</span>
+                <span className="is-drawer-close:hidden">Posts</span>
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/student-dashboard/my-sessions"
+                end
+                className={({ isActive }) =>
+                  `is-drawer-close:tooltip is-drawer-close:tooltip-right ${
+                    isActive ? "bg-primary text-primary-content" : "" // Active Styles
+                  }`
+                }
+                data-tip="My Session"
+              >
+                
+                <MdConnectWithoutContact />
+                <span className="is-drawer-close:hidden">My Session</span>
               </NavLink>
             </li>
           </ul>

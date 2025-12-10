@@ -12,7 +12,7 @@ const StudentUpdateProfile = () => {
   const navigate = useNavigate();
   const [saving, setSaving] = useState(false);
 
-  // 1. Setup Form with Default Values from existing userData
+  
   const {
     register,
     handleSubmit,
@@ -26,11 +26,11 @@ const StudentUpdateProfile = () => {
     },
   });
 
-  // 2. Submit Handler
+ 
   const onSubmit = async (data) => {
     setSaving(true);
     
-    // Structure the data to match your Schema
+    
     const updatePayload = {
       studentData: {
         phone: data.phone,
@@ -41,11 +41,11 @@ const StudentUpdateProfile = () => {
     };
 
     try {
-      // Send PATCH request
+      
       const res = await axiosSecure.patch("/users/me", updatePayload);
 
       if (res.data.success) {
-        // A. Update Local Context (Instant UI update)
+        
         const updatedUser = { 
             ...userData, 
             studentData: updatePayload.studentData 
@@ -53,14 +53,13 @@ const StudentUpdateProfile = () => {
         };
         setUserData(updatedUser);
 
-        // B. Show Success & Redirect
-        // toast.success("Profile updated successfully!"); 
+       
         console.log("Success");
-        navigate("/student-dashboard"); // Go back to overview
+        navigate("/student-dashboard"); 
       }
     } catch (err) {
       console.error("Update Failed:", err);
-      // toast.error("Failed to update profile.");
+      
     } finally {
       setSaving(false);
     }
@@ -71,7 +70,7 @@ const StudentUpdateProfile = () => {
   return (
     <div className="min-h-screen bg-base-100 p-6 md:p-10 ">
       
-      {/* --- HEADER --- */}
+     
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
         <div>
           <button 
@@ -85,12 +84,12 @@ const StudentUpdateProfile = () => {
         </div>
       </div>
 
-      {/* --- FORM CARD --- */}
+      
       <div className="card bg-base-200 shadow-xl border border-base-300 w-[95%] mx-auto max-md:flex max-md:flex-col max-md:items-center ">
         <div className="card-body max-md:w-full">
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
             
-            {/* Row 1: Contact Info */}
+            
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-md:w-full">
               <div className="form-control flex flex-col max-md:w-full">
                 <label className="label font-semibold">Phone Number</label>
@@ -123,7 +122,7 @@ const StudentUpdateProfile = () => {
 
             <div className="divider">Academic Info</div>
 
-            {/* Row 2: Academic Info */}
+           
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="form-control flex flex-col">
                 <label className="label font-semibold">Institute Name</label>
@@ -155,7 +154,7 @@ const StudentUpdateProfile = () => {
               </div>
             </div>
 
-            {/* Actions */}
+          
             <div className="card-actions justify-end mt-6">
               <button 
                 type="button" 

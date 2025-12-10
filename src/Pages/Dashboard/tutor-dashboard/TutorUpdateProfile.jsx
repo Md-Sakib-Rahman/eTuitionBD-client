@@ -76,7 +76,7 @@ const TutorUpdateProfile = () => {
   return (
     <div className="min-h-screen bg-base-100 p-6 md:p-10">
       
-      {/* --- HEADER --- */}
+       
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
         <div>
           <button
@@ -92,12 +92,12 @@ const TutorUpdateProfile = () => {
         </div>
       </div>
 
-      {/* --- FORM CARD --- */}
+      
       <div className="card bg-base-200 shadow-xl border border-base-300 w-[95%] mx-auto max-md:flex max-md:flex-col max-md:items-center">
         <div className="card-body max-md:w-full">
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
             
-            {/* CONTACT INFO */}
+             
             <div className="divider text-primary font-bold">Contact Details</div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-md:w-full">
@@ -134,11 +134,11 @@ const TutorUpdateProfile = () => {
               </div>
             </div>
 
-            {/*  PROFESSIONAL INFO */}
+        
             <div className="divider text-primary font-bold">Professional Info</div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Qualification */}
+               
               <div className="form-control flex flex-col ">
                 <label className="label font-semibold">Qualification</label>
                 <input
@@ -152,7 +152,7 @@ const TutorUpdateProfile = () => {
                 )}
               </div>
 
-              {/* Experience */}
+            
               <div className="form-control flex flex-col">
                 <label className="label font-semibold">Experience (Years)</label>
                 <input
@@ -168,7 +168,7 @@ const TutorUpdateProfile = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Hourly Rate */}
+              
               <div className="form-control flex flex-col">
                 <label className="label font-semibold">Hourly Rate (BDT)</label>
                 <input
@@ -182,7 +182,7 @@ const TutorUpdateProfile = () => {
                 )}
               </div>
 
-              {/* Subjects */}
+            
               <div className="form-control flex flex-col">
                 <label className="label font-semibold">Subjects (Comma Separated)</label>
                 <input
@@ -200,7 +200,7 @@ const TutorUpdateProfile = () => {
               </div>
             </div>
 
-            {/*  BIO */}
+            
             <div className="form-control flex flex-col">
                 <label className="label font-semibold">Bio / About Me</label>
                 <textarea
@@ -213,7 +213,7 @@ const TutorUpdateProfile = () => {
                 )}
             </div>
 
-            {/* Actions */}
+             
             <div className="card-actions justify-end mt-6">
               <button
                 type="button"

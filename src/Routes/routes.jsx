@@ -24,6 +24,10 @@ import AdminUserOverview from "../Pages/Dashboard/admin-dashboard/AdminUserOverv
 import TutionManagement from "../Pages/Dashboard/admin-dashboard/TutionManagement";
 import AdminTuitionOverview from "../Pages/Dashboard/admin-dashboard/AdminTuitionOverview";
 import MyApplications from "../Pages/Dashboard/tutor-dashboard/MyApplications";
+import Payment from "../Pages/Dashboard/student-dashboard/Payment";
+import PaymentSuccess from "../Pages/Dashboard/student-dashboard/PaymentSuccess";
+import MySessions from "../Pages/Dashboard/student-dashboard/MySessions";
+import TutorSessions from "../Pages/Dashboard/tutor-dashboard/TutorSessions";
 
 const router = createBrowserRouter([
   {
@@ -83,6 +87,21 @@ const router = createBrowserRouter([
         element: <EditPost/>,
 
       },
+      {
+        path: "/student-dashboard/payment/:id",
+        element: <Payment/>,
+
+      },
+      {
+        path: "/student-dashboard/payment/success",
+        element: <PaymentSuccess/>,
+
+      },
+      {
+        path: "/student-dashboard/my-sessions",
+        element: <MySessions/>,
+
+      },
     ],
   },
   {
@@ -100,6 +119,10 @@ const router = createBrowserRouter([
       {
         path: "/tutor-dashboard/my-application",
         element: <MyApplications/>,
+      },
+      {
+        path: "/tutor-dashboard/tutor-sessions",
+        element: <TutorSessions/>,
       }
     ],
     

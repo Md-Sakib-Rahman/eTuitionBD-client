@@ -8,7 +8,7 @@ const MyApplications = () => {
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // 1. Fetch Data
+
   useEffect(() => {
     fetchApplications();
   }, [axiosSecure]);
@@ -24,7 +24,7 @@ const MyApplications = () => {
     }
   };
 
-  // 2. Handle Delete (Cancel Application)
+ 
   const handleCancel = async (id) => {
     if(!window.confirm("Are you sure you want to withdraw this application?")) return;
 
@@ -32,7 +32,7 @@ const MyApplications = () => {
         const res = await axiosSecure.delete(`/my-applications/${id}`);
         if(res.data.success) {
             toast.success("Application withdrawn");
-            // Remove from UI
+            
             setApplications(prev => prev.filter(app => app._id !== id));
         }
     } catch (err) {
@@ -48,7 +48,7 @@ const MyApplications = () => {
       
       <div className="overflow-x-auto bg-base-100 shadow-xl rounded-xl">
         <table className="table">
-          {/* Head */}
+           
           <thead className="bg-base-200">
             <tr>
               <th>#</th>
@@ -72,14 +72,14 @@ const MyApplications = () => {
                     <td>{app.postId?.classGrade}</td>
                     <td>{app.postId?.budget} USD</td>
                     
-                    {/* Status Badge */}
+                     
                     <td>
                         {app.status === 'pending' && <span className="badge badge-warning gap-1"><FaClock/> Pending</span>}
                         {app.status === 'accepted' && <span className="badge badge-success gap-1 text-white"><FaCheckCircle/> Hired</span>}
                         {app.status === 'rejected' && <span className="badge badge-error gap-1 text-white"><FaTimesCircle/> Rejected</span>}
                     </td>
 
-                    {/* Actions */}
+                    
                     <td>
                         {app.status === 'pending' ? (
                              <button 

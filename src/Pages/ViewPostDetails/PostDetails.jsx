@@ -41,7 +41,10 @@ const PostDetails = () => {
 
     if (userData) fetchPost();
   }, [id, userData, axiosSecure]);
-
+  const handleConfirmTutor = (applicationId) => {
+     
+      navigate(`/student-dashboard/payment/${applicationId}`);
+  };
   const checkApplicationStatus = async () => {
       try {
           const res = await axiosSecure.get(`/posts/${id}/check-application`);
@@ -89,9 +92,7 @@ const PostDetails = () => {
         toast.error("Failed to reject application");
     }
   };
-  const handleConfirmTutor = async (applicationId) => {
-      toast.success("Tutor Confirmed! Redirecting to payment...");
-  };
+ 
   const handleDelete = async () => {
     if(window.confirm("Are you sure you want to delete this post? This cannot be undone.")) {
         try {

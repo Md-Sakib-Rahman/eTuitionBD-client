@@ -3,19 +3,20 @@ import { Link, NavLink, Outlet } from "react-router";
 import ThemeController from "../Pages/Shared/Navbar/themecontroller/ThemeContoller";
 import { GrOverview } from "react-icons/gr";
 import { IoDocumentsSharp } from "react-icons/io5";
+import { MdConnectWithoutContact } from "react-icons/md";
 const TutorDashboardLayout = () => {
   return (
     <div className="drawer lg:drawer-open">
       <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
       <div className="drawer-content">
-        {/* Navbar */}
+       
         <nav className="navbar w-full bg-base-300">
           <label
             htmlFor="my-drawer-4"
             aria-label="open sidebar"
             className="btn btn-square btn-ghost"
           >
-            {/* Sidebar toggle icon */}
+            
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -42,7 +43,7 @@ const TutorDashboardLayout = () => {
             <ThemeController></ThemeController>
           </div>
         </nav>
-        {/* Page content here */}
+        
         <Outlet />
       </div>
 
@@ -53,16 +54,16 @@ const TutorDashboardLayout = () => {
           className="drawer-overlay"
         ></label>
         <div className="flex min-h-full flex-col items-start bg-base-200 is-drawer-close:w-14 is-drawer-open:w-64 ">
-          {/* Sidebar content here */}
+          
           <ul className="menu w-full grow gap-2">
-            {/* List item */}
+            
             <li>
               <Link
                 to="/"
                 className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                 data-tip="Homepage"
               >
-                {/* Home icon */}
+               
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -85,12 +86,12 @@ const TutorDashboardLayout = () => {
                 end
                 className={({ isActive }) =>
                   `is-drawer-close:tooltip is-drawer-close:tooltip-right ${
-                    isActive ? "bg-primary text-primary-content" : "" // Active Styles
+                    isActive ? "bg-primary text-primary-content" : "" 
                   }`
                 }
-                data-tip="Homepage"
+                data-tip="OverView"
               >
-                {/* Home icon */}
+               
                 <GrOverview />
                 <span className="is-drawer-close:hidden">OverView</span>
               </NavLink>
@@ -101,14 +102,28 @@ const TutorDashboardLayout = () => {
                 end
                 className={({ isActive }) =>
                   `is-drawer-close:tooltip is-drawer-close:tooltip-right ${
-                    isActive ? "bg-primary text-primary-content" : "" // Active Styles
+                    isActive ? "bg-primary text-primary-content" : ""
                   }`
                 }
-                data-tip="Homepage"
+                data-tip="Application"
               >
-                
                 <IoDocumentsSharp />
                 <span className="is-drawer-close:hidden">My Application</span>
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/tutor-dashboard/tutor-sessions"
+                end
+                className={({ isActive }) =>
+                  `is-drawer-close:tooltip is-drawer-close:tooltip-right ${
+                    isActive ? "bg-primary text-primary-content" : "" 
+                  }`
+                }
+                data-tip="My Session"
+              >
+                <MdConnectWithoutContact />
+                <span className="is-drawer-close:hidden">My Session</span>
               </NavLink>
             </li>
           </ul>

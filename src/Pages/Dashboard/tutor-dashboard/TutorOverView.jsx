@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { CgDanger } from "react-icons/cg";
 import {
   FaEnvelope,
@@ -9,15 +9,39 @@ import {
   FaStar,
   FaMoneyBillWave,
   FaClock,
-  FaBookOpen
+  FaBookOpen,
+  FaWallet,
+  FaCheckCircle
 } from "react-icons/fa";
 import { AuthContext } from "../../../Context/AuthContextProvider";
-import { Link } from "react-router";
+import { Link } from "react-router"; 
+import useAxiosSecure from "../../../AxiosInstance/AxiosSecureInstance";
 
 const TutorOverView = () => {
   const { userData, loader } = useContext(AuthContext);
+  const axiosSecure = useAxiosSecure();
+  
+  const [stats, setStats] = useState({
+    pendingBalance: 0,
+    totalEarnings: 0,
+    activeJobCount: 0,
+    completedJobCount: 0
+  });
 
- 
+  useEffect(() => {
+    const fetchStats = async () => {
+      if (userData?.role === 'tutor') {
+        try {
+          const res = await axiosSecure.get('/tutor/stats');
+          setStats(res.data);
+        } catch (error) {
+          console.error("Failed to load stats", error);
+        }
+      }
+    };
+    fetchStats();
+  }, [userData, axiosSecure]);
+
   if (loader) {
     return (
       <div className="w-full h-[80vh] flex justify-center items-center">
@@ -25,11 +49,9 @@ const TutorOverView = () => {
       </div>
     );
   }
-
   
   const { displayName, photoURL, email, role, tutorData } = userData || {};
 
-  
   const isProfileIncomplete = 
     !tutorData?.subjects || 
     tutorData?.subjects.length === 0 || 
@@ -38,15 +60,25 @@ const TutorOverView = () => {
   return (
     <div className="min-h-screen bg-base-100 p-6 md:p-10">
 
-      {/* --- HEADER --- */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-base-content">
-          Hello, <span className="text-primary">{displayName?.split(" ")[0]}!</span> 👋
-        </h1>
-        <p className="text-base-content/70 mt-1">Here is your professional dashboard.</p>
+      
+      <div className="mb-8 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+        <div>
+            <h1 className="text-3xl font-bold text-base-content">
+            Hello, <span className="text-primary">{displayName?.split(" ")[0]}!</span> 👋
+            </h1>
+            <p className="text-base-content/70 mt-1">Here is your professional dashboard.</p>
+        </div>
+        <div className="flex gap-2">
+            <div className="badge badge-lg badge-primary gap-2">
+                <FaWallet /> Earned: ${stats.totalEarnings}
+            </div>
+            <div className="badge badge-lg badge-outline gap-2">
+                <FaClock /> Pending: ${stats.pendingBalance}
+            </div>
+        </div>
       </div>
 
-      {/* --- ALERT BANNER  --- */}
+      
       {isProfileIncomplete && (
         <div className="alert alert-warning shadow-md mb-10 flex-col md:flex-row items-start md:items-center gap-4">
           <CgDanger className="text-3xl shrink-0" />
@@ -63,15 +95,15 @@ const TutorOverView = () => {
         </div>
       )}
 
-      {/*MAIN GRID  */}
+      
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-        {/*  Profile Card */}
+        
         <div className="lg:col-span-1">
           <div className="card bg-base-200 shadow-xl border border-base-300">
             <div className="card-body items-center text-center">
 
-              {/* Avatar */}
+              
               <div className="avatar mb-4">
                 <div className="w-28 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
                   <img referrerPolicy="no-referrer" src={photoURL || "https://via.placeholder.com/150"} alt="Profile" />
@@ -81,7 +113,7 @@ const TutorOverView = () => {
               <h2 className="card-title text-2xl">{displayName}</h2>
               <div className="badge badge-secondary badge-outline mt-1 capitalize">{role || "Tutor"}</div>
 
-              {/* Rating Display  */}
+             
               <div className="flex items-center gap-2 mt-3 bg-base-100 px-3 py-1 rounded-full border border-base-300">
                 <FaStar className="text-yellow-500" />
                 <span className="font-bold">{tutorData?.averageRating || 0}</span>
@@ -90,7 +122,7 @@ const TutorOverView = () => {
 
               <div className="w-full border-t border-base-content/10 my-6"></div>
 
-              {/* Contact Info */}
+             
               <div className="w-full flex flex-col gap-4 text-left">
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-primary/10 rounded-lg text-primary">
@@ -122,27 +154,70 @@ const TutorOverView = () => {
           </div>
         </div>
 
-        {/*  Details & Stats */}
+        
         <div className="lg:col-span-2 flex flex-col gap-8">
 
-          {/*  Professional Info */}
+         
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+             <div className="stats shadow bg-base-100 border border-base-200">
+                <div className="stat p-4">
+                    <div className="stat-figure text-primary">
+                        <FaChalkboardTeacher className="text-2xl" />
+                    </div>
+                    <div className="stat-title text-xs">Active Jobs</div>
+                    <div className="stat-value text-primary text-2xl">{stats.activeJobCount}</div>
+                </div>
+             </div>
+             
+             <div className="stats shadow bg-base-100 border border-base-200">
+                <div className="stat p-4">
+                    <div className="stat-figure text-success">
+                        <FaCheckCircle className="text-2xl" />
+                    </div>
+                    <div className="stat-title text-xs">Completed</div>
+                    <div className="stat-value text-success text-2xl">{stats.completedJobCount}</div>
+                </div>
+             </div>
+
+             <div className="stats shadow bg-base-100 border border-base-200">
+                <div className="stat p-4">
+                    <div className="stat-figure text-secondary">
+                        <FaWallet className="text-2xl" />
+                    </div>
+                    <div className="stat-title text-xs">Earnings</div>
+                    <div className="stat-value text-secondary text-xl">${stats.totalEarnings}</div>
+                </div>
+             </div>
+
+             <div className="stats shadow bg-base-100 border border-base-200">
+                <div className="stat p-4">
+                    <div className="stat-figure text-warning">
+                        <FaClock className="text-2xl" />
+                    </div>
+                    <div className="stat-title text-xs">Pending</div>
+                    <div className="stat-value text-warning text-xl">${stats.pendingBalance}</div>
+                </div>
+             </div>
+          </div>
+
+          
           <div className="card bg-base-100 shadow-lg border border-base-200">
             <div className="card-body">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="card-title flex items-center gap-2">
-                  <FaChalkboardTeacher className="text-primary" /> Professional Info
+                   Professional Info
                 </h3>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 
-                {/* Qualification */}
+               
                 <div className="p-4 bg-base-200 rounded-xl">
                   <p className="text-sm text-base-content/60 mb-1">Qualification</p>
                   <p className="font-bold text-lg">{tutorData?.qualifications || "Not Set"}</p>
                 </div>
 
-                {/* Experience */}
+               
                 <div className="p-4 bg-base-200 rounded-xl">
                   <p className="text-sm text-base-content/60 mb-1 flex items-center gap-1">
                      <FaClock className="text-xs"/> Experience
@@ -150,7 +225,7 @@ const TutorOverView = () => {
                   <p className="font-bold text-lg">{tutorData?.experience ? `${tutorData.experience} Years` : "Not Set"}</p>
                 </div>
 
-                {/* Hourly Rate */}
+               
                 <div className="p-4 bg-base-200 rounded-xl border border-primary/20">
                   <p className="text-sm text-base-content/60 mb-1 flex items-center gap-1">
                     <FaMoneyBillWave className="text-success"/> Hourly Rate
@@ -160,7 +235,7 @@ const TutorOverView = () => {
                   </p>
                 </div>
 
-                {/* Location */}
+               
                 <div className="p-4 bg-base-200 rounded-xl">
                     <p className="text-sm text-base-content/60 mb-1">Preferred Location</p>
                     <p className="font-bold text-lg flex items-center gap-2">
@@ -172,14 +247,13 @@ const TutorOverView = () => {
             </div>
           </div>
 
-          {/* Bio & Subjects */}
           <div className="card bg-base-100 shadow-lg border border-base-200">
              <div className="card-body">
                 <h3 className="card-title flex items-center gap-2 mb-2">
                     <FaBookOpen className="text-secondary"/> Expertise & Bio
                 </h3>
                 
-                {/* Bio Section */}
+               
                 <div className="mb-4">
                     <h4 className="font-semibold text-sm text-base-content/70 mb-1">About Me</h4>
                     <p className="text-base-content/80 text-sm leading-relaxed">
@@ -187,7 +261,7 @@ const TutorOverView = () => {
                     </p>
                 </div>
 
-                {/* Subjects Tags */}
+               
                 <div>
                     <h4 className="font-semibold text-sm text-base-content/70 mb-2">Subjects I Teach</h4>
                     <div className="flex flex-wrap gap-2">
@@ -203,29 +277,6 @@ const TutorOverView = () => {
                     </div>
                 </div>
              </div>
-          </div>
-
-          {/* Stats Row */}
-          <div className="stats shadow w-full bg-base-100 border border-base-200 stats-vertical lg:stats-horizontal">
-
-            <div className="stat">
-              <div className="stat-figure text-primary">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-8 h-8 stroke-current"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-              </div>
-              <div className="stat-title">Active Students</div>
-              <div className="stat-value text-primary">0</div>
-              <div className="stat-desc">Current bookings</div>
-            </div>
-
-            <div className="stat">
-              <div className="stat-figure text-secondary">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-8 h-8 stroke-current"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
-              </div>
-              <div className="stat-title">Profile Status</div>
-              <div className="stat-value text-secondary text-2xl capitalize">{userData?.status || "Active"}</div>
-              <div className="stat-desc">Visible to students</div>
-            </div>
-
           </div>
 
         </div>
