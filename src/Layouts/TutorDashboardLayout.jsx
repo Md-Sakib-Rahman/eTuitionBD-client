@@ -4,6 +4,7 @@ import ThemeController from "../Pages/Shared/Navbar/themecontroller/ThemeContoll
 import { GrOverview } from "react-icons/gr";
 import { IoDocumentsSharp } from "react-icons/io5";
 import { MdConnectWithoutContact } from "react-icons/md";
+import { FaChartPie } from "react-icons/fa";
 const TutorDashboardLayout = () => {
   return (
     <div className="drawer lg:drawer-open">
@@ -124,6 +125,21 @@ const TutorDashboardLayout = () => {
               >
                 <MdConnectWithoutContact />
                 <span className="is-drawer-close:hidden">My Session</span>
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/tutor-dashboard/tutor-report"
+                end
+                className={({ isActive }) =>
+                  `is-drawer-close:tooltip is-drawer-close:tooltip-right ${
+                    isActive ? "bg-primary text-primary-content" : "" 
+                  }`
+                }
+                data-tip="Reports & Analytics"
+              >
+                 <FaChartPie className="size-4" />
+                <span className="is-drawer-close:hidden">Reports & Analytics</span>
               </NavLink>
             </li>
           </ul>

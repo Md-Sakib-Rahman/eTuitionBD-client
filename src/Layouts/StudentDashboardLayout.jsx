@@ -4,19 +4,20 @@ import ThemeController from "../Pages/Shared/Navbar/themecontroller/ThemeContoll
 import { GrOverview } from "react-icons/gr";
 import { GrDocumentSound } from "react-icons/gr";
 import { MdConnectWithoutContact } from "react-icons/md";
+import { FaChartPie } from "react-icons/fa";
 const StudentDashboardLayout = () => {
   return (
     <div className="drawer lg:drawer-open">
       <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
       <div className="drawer-content">
-        {/* Navbar */}
+       
         <nav className="navbar w-full bg-base-300">
           <label
             htmlFor="my-drawer-4"
             aria-label="open sidebar"
             className="btn btn-square btn-ghost"
           >
-            {/* Sidebar toggle icon */}
+            
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -43,7 +44,7 @@ const StudentDashboardLayout = () => {
             <ThemeController></ThemeController>
           </div>
         </nav>
-        {/* Page content here */}
+        
         <Outlet />
       </div>
 
@@ -54,9 +55,9 @@ const StudentDashboardLayout = () => {
           className="drawer-overlay"
         ></label>
         <div className="flex min-h-full flex-col items-start bg-base-200 is-drawer-close:w-14 is-drawer-open:w-64 ">
-          {/* Sidebar content here */}
+          
           <ul className="menu w-full grow gap-2">
-            {/* List item */}
+            
             <li>
               <Link
                 to="/"
@@ -86,7 +87,7 @@ const StudentDashboardLayout = () => {
                 end
                 className={({ isActive }) =>
                   `is-drawer-close:tooltip is-drawer-close:tooltip-right ${
-                    isActive ? "bg-primary text-primary-content" : "" // Active Styles
+                    isActive ? "bg-primary text-primary-content" : "" 
                   }`
                 }
                 data-tip="OverView"
@@ -102,7 +103,7 @@ const StudentDashboardLayout = () => {
                 end
                 className={({ isActive }) =>
                   `is-drawer-close:tooltip is-drawer-close:tooltip-right ${
-                    isActive ? "bg-primary text-primary-content" : "" // Active Styles
+                    isActive ? "bg-primary text-primary-content" : "" 
                   }`
                 }
                 data-tip="Posts"
@@ -118,7 +119,7 @@ const StudentDashboardLayout = () => {
                 end
                 className={({ isActive }) =>
                   `is-drawer-close:tooltip is-drawer-close:tooltip-right ${
-                    isActive ? "bg-primary text-primary-content" : "" // Active Styles
+                    isActive ? "bg-primary text-primary-content" : "" 
                   }`
                 }
                 data-tip="My Session"
@@ -126,6 +127,22 @@ const StudentDashboardLayout = () => {
                 
                 <MdConnectWithoutContact />
                 <span className="is-drawer-close:hidden">My Session</span>
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/student-dashboard/student-report"
+                end
+                className={({ isActive }) =>
+                  `is-drawer-close:tooltip is-drawer-close:tooltip-right ${
+                    isActive ? "bg-primary text-primary-content" : "" 
+                  }`
+                }
+                data-tip="Reports & Analytics"
+              >
+                
+                <FaChartPie className="size-4" />
+                <span className="is-drawer-close:hidden">Reports & Analytics</span>
               </NavLink>
             </li>
           </ul>

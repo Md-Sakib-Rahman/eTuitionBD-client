@@ -58,12 +58,10 @@ const StudentOverView = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         
-        {/* LEFT COL: Profile Card */}
         <div className="lg:col-span-1 max-lg:h-[500px] ">
           <div className="card bg-base-200 shadow-xl border border-base-300">
             <div className="card-body items-center text-center">
               
-              {/* Avatar with Ring */}
               <div className="avatar mb-4">
                 <div className="w-28 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
                   <img referrerPolicy="no-referrer" src={photoURL || "https://via.placeholder.com/150"} alt="Profile" />
@@ -75,7 +73,6 @@ const StudentOverView = () => {
               
               <div className="w-full border-t border-base-content/10 my-6"></div>
 
-              {/* Contact Info */}
               <div className="w-full flex flex-col gap-4 text-left">
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-primary/10 rounded-lg text-primary">
@@ -107,10 +104,8 @@ const StudentOverView = () => {
           </div>
         </div>
 
-        {/*  Details & Stats */}
         <div className="lg:col-span-2 flex flex-col justify-between gap-8 lg:h-[500px]  pb-5">
           
-          {/* Academic Information Card */}
           <div className="card bg-base-100 shadow-lg border border-base-200">
             <div className="card-body">
                 <div className="flex justify-between items-center mb-4">
@@ -139,7 +134,6 @@ const StudentOverView = () => {
             </div>
           </div>
 
-          {/* Stats Row */}
           <div className="stats shadow w-full bg-base-100 border border-base-200 stats-vertical lg:stats-horizontal ">
             
             <div className="stat">

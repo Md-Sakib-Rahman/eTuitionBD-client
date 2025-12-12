@@ -145,7 +145,6 @@ const UserManagement = () => {
                     </div>
                   </td>
 
-                  {/* Joined Date */}
                   <td className="text-sm font-mono">
                     {new Date(user.createdAt).toLocaleDateString()}
                   </td>

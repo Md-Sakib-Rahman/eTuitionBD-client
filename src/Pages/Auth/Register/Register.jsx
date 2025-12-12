@@ -18,7 +18,7 @@ const Register = () => {
   } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
-  const state = location.state?.from?.pathname || "/";
+  const state = location.state?.from?.pathname || null;
 
   const {
     register,
@@ -29,7 +29,7 @@ const Register = () => {
 
   const handleFormSignIn = async (data) => {
     setLoader(true);
-    const { email, name, password, role, photoFile } = data;
+    const { email, name, password, role, photoFile, phone } = data;
     //
 
     const formData = new FormData();
@@ -55,6 +55,7 @@ const Register = () => {
         email: email,
         image: imageUrl,
         role: role,
+        phone: phone
       };
       await saveToDB(userInfo, token);
 
@@ -63,11 +64,18 @@ const Register = () => {
         displayName: name,
         photoURL: imageUrl,
         role: role,
+        phone:phone
       });
       console.log("registration success!");
-      navigate(state);
+      if(state){
+         navigate(state);
+      }else{
+        
+        navigate(`/${role}-dashboard`)
+      }
+     
 
-      // adasadada
+      
     } catch (err) {
       console.log(err);
       setLoader(false);
@@ -131,24 +139,24 @@ const Register = () => {
               onSubmit={handleSubmit(handleFormSignIn)}
               className="fieldset"
             >
-              {/* --- NAME FIELD --- */}
+              
               <label className="label">Name</label>
               <input
                 type="text"
                 {...register("name", { required: "Name is required" })}
-                // 3. Add conditional class for red border
+                
                 className={`input ${errors.name ? "input-error" : ""}`}
                 placeholder="Name"
               />
 
-              {/* 4. Display Error Message */}
+              
               {errors.name && (
                 <span className="text-red-500 text-xs mt-1">
                   {errors.name.message}
                 </span>
               )}
 
-              {/* --- ROLE FIELD --- */}
+              
               <label className="label font-semibold mt-2">Register as:</label>
               <div className="flex gap-6 mb-2">
                 <label className="flex items-center gap-2 cursor-pointer">
@@ -187,7 +195,7 @@ const Register = () => {
                   {errors.photoFile.message}
                 </span>
               )}
-              {/* --- EMAIL FIELD --- */}
+             
               <label className="label">Email</label>
               <input
                 type="email"
@@ -201,7 +209,22 @@ const Register = () => {
                 </span>
               )}
 
-              {/* --- PASSWORD FIELD --- */}
+              
+              <label className="label">Phone</label>
+              <input
+                type="tel"
+                {...register("phone", {
+                  required: "Phone is required",
+                  
+                })}
+                className={`input ${errors.password ? "input-error" : ""}`}
+                placeholder="Phone"
+              />
+              {errors.password && (
+                <span className="text-red-500 text-xs mt-1">
+                  {errors.password.message}
+                </span>
+              )}
               <label className="label">Password</label>
               <input
                 type="password"

@@ -114,3 +114,6 @@
   --depth: 1; /* Slight shadow for light mode to show depth */
   --noise: 0;
 }
+body{
+  overflow-x: hidden;
+}

@@ -28,6 +28,9 @@ import Payment from "../Pages/Dashboard/student-dashboard/Payment";
 import PaymentSuccess from "../Pages/Dashboard/student-dashboard/PaymentSuccess";
 import MySessions from "../Pages/Dashboard/student-dashboard/MySessions";
 import TutorSessions from "../Pages/Dashboard/tutor-dashboard/TutorSessions";
+import Reports from "../Pages/Dashboard/admin-dashboard/Reports";
+import StudentReports from "../Pages/Dashboard/student-dashboard/StudentReports";
+import TutorReport from "../Pages/Dashboard/tutor-dashboard/TutorReport";
 
 const router = createBrowserRouter([
   {
@@ -102,6 +105,11 @@ const router = createBrowserRouter([
         element: <MySessions/>,
 
       },
+      {
+        path: "/student-dashboard/student-report",
+        element: <StudentReports/>,
+
+      },
     ],
   },
   {
@@ -123,6 +131,14 @@ const router = createBrowserRouter([
       {
         path: "/tutor-dashboard/tutor-sessions",
         element: <TutorSessions/>,
+      },
+      {
+        path: "/tutor-dashboard/post-details/:id",
+        element: <PostDetails/>,
+      },
+      {
+        path: "/tutor-dashboard/tutor-report",
+        element: <TutorReport/>,
       }
     ],
     
@@ -146,6 +162,10 @@ const router = createBrowserRouter([
       {
         path: "/admin-dashboard/admin-tuition-overview/:id",
         element: <AdminTuitionOverview/>,
+      },
+      {
+        path: "/admin-dashboard/reports-analytics",
+        element: <Reports/>,
       },
       
     ],

@@ -3,20 +3,21 @@ import { Link, NavLink, Outlet } from "react-router";
 import ThemeController from "../Pages/Shared/Navbar/themecontroller/ThemeContoller";
 import { GrOverview } from "react-icons/gr";
 import { FaUsers, FaChalkboardTeacher, FaChartPie, FaHome } from "react-icons/fa";
+import { MdConnectWithoutContact } from "react-icons/md";
 const AdminDashboardLayout = () => {
     
   return (
     <div className="drawer lg:drawer-open">
       <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
       <div className="drawer-content">
-        {/* Navbar */}
+    
         <nav className="navbar w-full bg-base-300">
           <label
             htmlFor="my-drawer-4"
             aria-label="open sidebar"
             className="btn btn-square btn-ghost"
           >
-            {/* Sidebar toggle icon */}
+           
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -43,7 +44,7 @@ const AdminDashboardLayout = () => {
             <ThemeController></ThemeController>
           </div>
         </nav>
-        {/* Page content here */}
+        
         <Outlet />
       </div>
 
@@ -54,16 +55,16 @@ const AdminDashboardLayout = () => {
           className="drawer-overlay"
         ></label>
         <div className="flex min-h-full flex-col items-start bg-base-200 is-drawer-close:w-14 is-drawer-open:w-64 ">
-          {/* Sidebar content here */}
+          
           <ul className="menu w-full grow gap-2">
-            {/* List item */}
+            
             <li>
               <Link
                 to="/"
                 className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                 data-tip="Homepage"
               >
-                {/* Home icon */}
+               
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -87,10 +88,10 @@ const AdminDashboardLayout = () => {
                 end
                 className={({ isActive }) =>
                   `is-drawer-close:tooltip is-drawer-close:tooltip-right ${
-                    isActive ? "bg-primary text-primary-content" : "" // Active Styles
+                    isActive ? "bg-primary text-primary-content" : "" 
                   }`
                 }
-                data-tip="Homepage"
+                data-tip="User Management"
               >
                 
                 <FaUsers className="size-4" />
@@ -103,23 +104,24 @@ const AdminDashboardLayout = () => {
                 end
                 className={({ isActive }) =>
                   `is-drawer-close:tooltip is-drawer-close:tooltip-right ${
-                    isActive ? "bg-primary text-primary-content" : "" // Active Styles
+                    isActive ? "bg-primary text-primary-content" : "" 
                   }`
                 }
-                data-tip="Homepage"
+                data-tip="Tuition Management"
               >
                 
                 <FaChalkboardTeacher className="size-4" />
                 <span className="is-drawer-close:hidden">Tuition Management</span>
               </NavLink>
             </li>
+           
             <li>
               <NavLink
                 to="/admin-dashboard/reports-analytics"
                 end
                 className={({ isActive }) =>
                   `is-drawer-close:tooltip is-drawer-close:tooltip-right ${
-                    isActive ? "bg-primary text-primary-content" : "" // Active Styles
+                    isActive ? "bg-primary text-primary-content" : "" 
                   }`
                 }
                 data-tip="Homepage"

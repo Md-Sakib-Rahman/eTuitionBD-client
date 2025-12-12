@@ -45,11 +45,9 @@ const EditPost = () => {
     fetchPost();
   }, [id, axiosSecure, setValue, navigate]);
 
-  // 2. Submit Update
   const onSubmit = async (data) => {
     setUpdating(true);
     
-    // Convert numbers ensuring they are valid
     const updatePayload = {
         ...data,
         duration: Number(data.duration),
@@ -60,7 +58,7 @@ const EditPost = () => {
       const res = await axiosSecure.put(`/posts/${id}`, updatePayload);
       if (res.data.success) {
         toast.success("Post Updated Successfully!");
-        navigate(`/student-dashboard/post-details/${id}`); // Go back to details
+        navigate(`/student-dashboard/post-details/${id}`);
       }
     } catch (err) {
       console.error(err);
@@ -81,7 +79,6 @@ const EditPost = () => {
   return (
     <div className="min-h-screen bg-base-100 p-6 md:p-10">
       
-      {/* HEADER */}
       <div className="flex items-center gap-4 mb-8 ">
         <button 
             onClick={() => navigate(-1)} 
@@ -99,7 +96,6 @@ const EditPost = () => {
         <div className="card-body">
           <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-            {/* --- JOB INFO --- */}
             <div className="form-control flex flex-col">
               <label className="label font-semibold">Subject</label>
               <input
@@ -141,7 +137,6 @@ const EditPost = () => {
               </select>
             </div>
 
-            {/* --- TIME & MONEY --- */}
             <div className="form-control flex flex-col">
               <label className="label font-semibold">Duration (Hours)</label>
               <div className="relative">
@@ -166,7 +161,6 @@ const EditPost = () => {
               </div>
             </div>
 
-            {/* --- DESCRIPTION --- */}
              <div className="form-control md:col-span-2 flex flex-col">
               <label className="label font-semibold">Additional Description</label>
               <textarea
@@ -176,7 +170,6 @@ const EditPost = () => {
               {errors.description && <span className="text-error text-xs mt-1">{errors.description.message}</span>}
             </div>
 
-            {/* --- SUBMIT --- */}
             <div className="form-control mt-6 md:col-span-2 flex flex-col">
               <button 
                 type="submit" 

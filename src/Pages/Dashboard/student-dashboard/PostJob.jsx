@@ -36,14 +36,12 @@ const PostJob = () => {
       area: data.area,
       address: data.address,
       description: data.description,
-      // Note: Status defaults to 'pending' on backend automatically
     };
 
     try {
       const res = await axiosSecure.post("/posts", jobData);
       
       if (res.data.success) {
-        // Message updated to reflect the Admin Approval workflow
         toast.success("Job submitted! Pending admin approval.");
         navigate("/student-dashboard/studenttuitionposts");  
       }
@@ -58,7 +56,6 @@ const PostJob = () => {
   return (
     <div className="min-h-screen bg-base-100 p-6 md:p-10">
       
-      {/* HEADER */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold">Post a Tuition Job</h1>
         <p className="text-base-content/70">Find the perfect tutor for your specific needs.</p>
@@ -68,7 +65,6 @@ const PostJob = () => {
         <div className="card-body">
           <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-6">
             
-            {/* --- SECTION 1: READ ONLY INFO --- */}
             <div className="form-control flex flex-col">
               <label className="label font-semibold">Student Name</label>
               <input
@@ -90,7 +86,6 @@ const PostJob = () => {
 
             <div className="divider md:col-span-2 text-primary font-bold">Job Details</div>
 
-            {/* --- SECTION 2: JOB INFO --- */}
             <div className="form-control flex flex-col">
               <label className="label font-semibold">Subject</label>
               <input
@@ -135,7 +130,6 @@ const PostJob = () => {
               {errors.medium && <span className="text-error text-xs mt-1">{errors.medium.message}</span>}
             </div>
 
-            {/* --- SECTION 3: TIME & MONEY --- */}
             <div className="form-control flex flex-col">
               <label className="label font-semibold">Duration (Hours)</label>
               <div className="relative">
@@ -178,7 +172,6 @@ const PostJob = () => {
 
             <div className="divider md:col-span-2 text-primary font-bold">Location</div>
 
-            {/* --- SECTION 4: LOCATION (Required for Challenges) --- */}
             <div className="form-control flex flex-col">
               <label className="label font-semibold">District</label>
               <select
@@ -189,7 +182,6 @@ const PostJob = () => {
                 <option value="Dhaka">Dhaka</option>
                 <option value="Chittagong">Chittagong</option>
                 <option value="Sylhet">Sylhet</option>
-                {/* Add more districts as needed for your filter challenge */}
               </select>
               {errors.district && <span className="text-error text-xs mt-1">{errors.district.message}</span>}
             </div>
@@ -225,7 +217,6 @@ const PostJob = () => {
               {errors.description && <span className="text-error text-xs mt-1">{errors.description.message}</span>}
             </div>
 
-            {/* --- SUBMIT --- */}
             <div className="form-control mt-6 md:col-span-2 w-full">
               <button 
                 type="submit" 

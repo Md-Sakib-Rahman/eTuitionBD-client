@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router"; // or "react-router-dom"
+import { useNavigate } from "react-router"; 
 import { FaFilter, FaEye, FaChalkboardTeacher } from "react-icons/fa";
 import useAxiosSecure from "../../../AxiosInstance/AxiosSecureInstance";
 import toast from "react-hot-toast";
@@ -10,9 +10,9 @@ const TutionManagement = () => {
   
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [filterStatus, setFilterStatus] = useState("all"); // 'all', 'pending', 'approved', 'rejected'
+  const [filterStatus, setFilterStatus] = useState("all"); 
 
-  // 1. Fetch All Posts
+  
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -28,13 +28,12 @@ const TutionManagement = () => {
     fetchPosts();
   }, [axiosSecure]);
 
-  // 2. Filter Logic
+ 
   const filteredPosts = posts.filter((post) => {
     if (filterStatus === "all") return true;
     return post.status === filterStatus;
   });
 
-  // 3. Navigation Handler
   const handleViewDetails = (id) => {
     navigate(`/admin-dashboard/admin-tuition-overview/${id}`);
   };
@@ -50,7 +49,7 @@ const TutionManagement = () => {
   return (
     <div className="p-6 bg-base-100 min-h-screen">
       
-      {/* --- HEADER --- */}
+      
       <div className="flex flex-col md:flex-row justify-between items-end gap-4 mb-8">
         <div>
           <h1 className="text-3xl font-bold flex items-center gap-2">
@@ -61,7 +60,7 @@ const TutionManagement = () => {
           </p>
         </div>
 
-        {/* --- FILTER TABS --- */}
+        
         <div className="join shadow-sm">
           <input 
             className="join-item btn btn-sm" 
@@ -98,10 +97,9 @@ const TutionManagement = () => {
         </div>
       </div>
 
-      {/* --- TABLE --- */}
       <div className="overflow-x-auto bg-base-100 shadow-xl rounded-2xl border border-base-200">
         <table className="table">
-          {/* Head */}
+       
           <thead className="bg-base-200 text-base-content/70">
             <tr>
               <th>#</th>
@@ -129,13 +127,11 @@ const TutionManagement = () => {
                 >
                   <th>{index + 1}</th>
                   
-                  {/* Subject & Class */}
                   <td>
                     <div className="font-bold">{post.subject}</div>
                     <div className="text-xs opacity-50">{post.classGrade} ({post.medium})</div>
                   </td>
 
-                  {/* Student Info */}
                   <td>
                     <div className="flex items-center gap-3">
                       <div className="avatar">
@@ -153,12 +149,10 @@ const TutionManagement = () => {
                     </div>
                   </td>
 
-                  {/* Budget */}
                   <td className="font-mono font-semibold">
                     ${post.budget}
                   </td>
 
-                  {/* Status Badge */}
                   <td>
                     <span className={`badge badge-sm font-semibold capitalize ${
                         post.status === 'approved' ? 'badge-success text-white' :
@@ -170,12 +164,10 @@ const TutionManagement = () => {
                     </span>
                   </td>
 
-                  {/* Date */}
                   <td className="text-sm text-base-content/60">
                     {new Date(post.createdAt).toLocaleDateString()}
                   </td>
 
-                  {/* Action */}
                   <td className="text-right">
                     <button 
                       onClick={(e) => {

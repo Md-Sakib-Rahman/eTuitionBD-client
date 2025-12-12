@@ -26,10 +26,7 @@ const ThemeController = () => {
 
   return (
     <label className="toggle text-base-content">
-      {/* - checked: controlled by state (true if light-purple)
-         - onChange: triggers the switch
-         - value: standard required prop, but we handle logic in handleToggle 
-      */}
+      
       <input 
         type="checkbox" 
         className="theme-controller" 
@@ -37,7 +34,6 @@ const ThemeController = () => {
         checked={theme === "light-purple"}
       />
 
-      {/* Sun Icon (Visible in Light Mode) */}
       <svg
         aria-label="sun"
         xmlns="http://www.w3.org/2000/svg"
@@ -62,7 +58,6 @@ const ThemeController = () => {
         </g>
       </svg>
 
-      {/* Moon Icon (Visible in Dark Mode) */}
       <svg
         aria-label="moon"
         xmlns="http://www.w3.org/2000/svg"

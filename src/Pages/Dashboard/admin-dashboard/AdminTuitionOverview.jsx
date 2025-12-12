@@ -74,7 +74,7 @@ const AdminTuitionOverview = () => {
   return (
     <div className="p-6 bg-base-100 min-h-screen">
       
-      {/* HEADER */}
+      
       <div className="flex items-center gap-4 mb-8">
         <button onClick={() => navigate(-1)} className="btn btn-circle btn-ghost">
             <FaArrowLeft />
@@ -95,7 +95,7 @@ const AdminTuitionOverview = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         
-        {/* LEFT COLUMN: POST DETAILS */}
+       
         <div className="lg:col-span-2 space-y-6">
             <div className="card bg-base-200 shadow-sm border border-base-300">
                 <div className="card-body">
@@ -128,16 +128,15 @@ const AdminTuitionOverview = () => {
             </div>
         </div>
 
-        {/* RIGHT COLUMN: ACTIONS & STUDENT INFO */}
         <div className="lg:col-span-1 space-y-6">
             
-            {/* ADMIN ACTIONS CARD */}
+           
             <div className="card bg-base-100 shadow-xl border border-primary/20">
                 <div className="card-body">
                     <h3 className="card-title text-sm uppercase text-base-content/50">Admin Actions</h3>
                     
                     <div className="flex flex-col gap-3 mt-2">
-                        {/* APPROVE BUTTON */}
+                     
                         <button 
                             onClick={() => handleStatusChange('approved')}
                             disabled={post.status === 'approved' || processing}
@@ -146,7 +145,7 @@ const AdminTuitionOverview = () => {
                             <FaCheck /> Approve Post
                         </button>
 
-                        {/* REJECT BUTTON */}
+                       
                         <button 
                             onClick={() => handleStatusChange('rejected')}
                             disabled={post.status === 'rejected' || processing}
@@ -157,7 +156,7 @@ const AdminTuitionOverview = () => {
 
                         <div className="divider my-1"></div>
 
-                        {/* DELETE BUTTON */}
+                        
                         <button 
                             onClick={handleDelete}
                             className="btn btn-outline btn-error w-full"
@@ -168,7 +167,7 @@ const AdminTuitionOverview = () => {
                 </div>
             </div>
 
-            {/* STUDENT INFO CARD */}
+           
             <div className="card bg-base-200 shadow-sm">
                 <div className="card-body">
                     <h3 className="card-title text-sm uppercase text-base-content/50">Posted By</h3>

@@ -9,16 +9,24 @@ const Navbar = () => {
   const { userData, logout, setUserData, loader, setLoader } = useContext(AuthContext);
   const { theme } = useContext(ThemeContext);
 
-  if (loader) {
-    return (
-      <div className="min-h-screen flex justify-center items-center">
-        <div className="text-center" >
-          <span className="loading loading-spinner"></span>
-        <h2 className="font-bold">Please Wait.. we are checking the System</h2>
-        </div>
-      </div>
-    );
-  }
+  // if (loader) {
+  //   return (
+  //     <div className="min-h-screen flex justify-center items-center">
+  //       <div className="text-center" >
+  //         <span className="loading loading-spinner"></span>
+  //       <h2 className="font-bold">Please Wait.. we are checking the System</h2>
+  //       </div>
+  //     </div>
+  //   );
+  // }
+  const closeDropdown = () => {
+    const elem = document.activeElement;
+    if (elem) {
+      setTimeout(() => {
+        elem?.blur();
+      }, 50); 
+    }
+  };
 
   let dashboardLink = "/";
   if (userData) {
@@ -44,6 +52,7 @@ const Navbar = () => {
     logout().then(() => {
       console.log("logged user Out");
       setUserData(null);
+      closeDropdown()
     });
   };
 
@@ -51,7 +60,7 @@ const Navbar = () => {
     <div
       className={`navbar max-md:px-4 shadow-sm ${
         theme == "black-purple" ? "bg-gray-900" : "bg-white"
-      }   rounded-2xl px-10 w-[90%] mx-auto fixed top-0 right-0 left-0 mt-2 z-10 `}
+      }   rounded-2xl px-10 w-[90%] max-sm:w-[380px]  fixed top-2 left-0 right-0 mx-auto z-10 `}
     >
       <div className="navbar-start">
         <div className="dropdown">
@@ -75,7 +84,7 @@ const Navbar = () => {
             tabIndex="-1"
             className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
           >
-            {/* FIX: Used 'navLinks' and accessed link.path/link.label */}
+            
             {navLinks.map((link, index) => {
               return (
                 <li key={index}>
@@ -91,7 +100,7 @@ const Navbar = () => {
       </div>
       
       <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1">
+        <ul className="menu menu-horizontal px-1" >
           {navLinks.map((link) => (
             <li key={link.label}>
               <NavLink
@@ -144,7 +153,7 @@ const Navbar = () => {
                 <h2>{userData.displayName}</h2>
               </li>
               <li>
-                <Link to={dashboardLink} className="justify-between">
+                <Link  to={dashboardLink} className="justify-between">
                   Dashboard
                   <span className="badge">New</span>
                 </Link>

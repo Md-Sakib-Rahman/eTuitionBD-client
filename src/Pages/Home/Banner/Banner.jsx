@@ -31,7 +31,7 @@ const Banner = () => {
 
   const { theme } = useContext(ThemeContext);
   return (
-    <div className="flex justify-center min-h-[600px]  max-md:flex-col-reverse gap-20 max-md:gap-4 items-center my-5">
+    <div className=" overflow-hidden flex justify-center min-h-[600px]  max-md:flex-col-reverse gap-20 max-md:gap-4 items-center my-5">
       <div className="flex flex-col items-start gap-4 max-md:w-full">
         <motion.h2
         key={theme}
@@ -53,19 +53,17 @@ const Banner = () => {
           <Typewriter text="tutors" />
         </motion.h2>
 
-        {/* <h2 className="text-6xl xl:text-7xl max-md:text-4xl font-bold text-accent">
-          Connecting <br className="xl:hidden" /> Students with <br /> tutors
-        </h2> */}
+        
         <p className="max-w-[500px]">
           eTutionBD is a platform where student and tutors connect with least
           amount of barrier
         </p>
         <button className="btn btn-primary">Join Now</button>
       </div>
-      <div>
+      <div className="overflow-hidden">
         <motion.div
-          initial={{ opacity: 0, x: 400 }}
-          whileInView={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, x: 100 }}
+          animate={{ opacity: 1, x: 0 }}
           transition={{
             duration: 1,
             ease: "easeInOut",
@@ -73,7 +71,7 @@ const Banner = () => {
           viewport={{ once: true }}
         >
           <img
-            className="w-[400px] xl:w-[500px] max-md:w-[300px]"
+            className="w-[400px] xl:w-[500px] max-md:w-[30px]"
             src={theme == "black-purple" ? userBanner : darkUserBanner}
             alt=""
           />
