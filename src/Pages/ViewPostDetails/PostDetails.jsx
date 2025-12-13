@@ -92,8 +92,18 @@ const PostDetails = () => {
   const handleApply = async () => {
     try {
       await axiosSecure.post("/apply-job", { postId: id });
-      toast.success("Applied successfully!");
+      
       setApplicationStatus("pending");
+      Swal.fire({
+                position: "top-end",
+                width: 400,
+                height: 300,
+                theme:"dark", 
+                icon: "success",
+                title: "Applied for the job !",
+                showConfirmButton: false,
+                timer: 1500,
+              });
     } catch (err) {
       toast.error(err.response?.data?.message || "Failed to apply");
     }
