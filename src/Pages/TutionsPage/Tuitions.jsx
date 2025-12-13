@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FaSearch } from "react-icons/fa";
-import TuitionCard from "./TuitionCard/TuitionCard.jsx"; 
+import TuitionCard from "./TuitionCard/TuitionCard";
 
 const Tuitions = () => {
   const [posts, setPosts] = useState([]);
@@ -66,16 +66,16 @@ const Tuitions = () => {
   return (
     <div className="min-h-screen bg-base-100 py-10 px-5 md:px-20 mt-16">
       
-      {/* HEADER */}
+      
       <div className="text-center mb-10">
         <h1 className="text-4xl font-bold mb-4">Available Tuitions</h1>
         <p className="text-base-content/60">Find the perfect tuition job.</p>
       </div>
 
-      {/* CONTROLS ROW (Search + Sort) */}
+     
       <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-8 max-w-5xl mx-auto">
         
-        {/* Search Bar */}
+        
         <div className="join w-full md:max-w-md shadow-sm">
           <input
             type="text"
@@ -92,7 +92,7 @@ const Tuitions = () => {
           </button>
         </div>
 
-        {/* Sort Dropdown */}
+        
         <select 
             className="select select-bordered w-full md:w-auto shadow-sm"
             value={sortOrder}
@@ -104,7 +104,7 @@ const Tuitions = () => {
         </select>
       </div>
 
-      {/* NO DATA STATE */}
+      
       {sortedPosts.length === 0 && (
         <div className="text-center py-20 bg-base-200 rounded-xl">
           <h3 className="text-xl font-semibold">No tuitions found.</h3>
@@ -112,14 +112,14 @@ const Tuitions = () => {
         </div>
       )}
 
-      {/* JOB GRID */}
+      
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
         {currentPosts.map((post) => (
             <TuitionCard key={post._id} post={post} />
         ))}
       </div>
 
-      {/* PAGINATION CONTROLS */}
+      
       {sortedPosts.length > postsPerPage && (
         <div className="flex justify-center mt-12">
           <div className="join">

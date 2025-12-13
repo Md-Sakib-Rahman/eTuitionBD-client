@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import { motion } from "motion/react";
-const MinimalCard = () => {
+import { AuthContext } from "../Context/AuthContextProvider";
+import { Link } from "react-router";
+const MinimalCard = ({post}) => {
+  const {userData} = useContext(AuthContext)
   return (
     <motion.div
       initial={{ opacity: 0, y: 50 }}
@@ -24,17 +27,22 @@ const MinimalCard = () => {
         <div className="flex justify-start items-center gap-2">
           <img
             className="w-10 border-2 border-white rounded-full"
-            src="https://i.ibb.co/4nxSjfdH/Screenshot-from-2025-11-19-00-07-16.png"
+            src={post.studentId.image}
             alt=""
           />
-          <h2 className="card-title">Md Sakib Rahman</h2>
+          <h2 className="card-title">{post.studentId.name}</h2>
         </div>
-        <p>
-          A card component has a figure, a body part, and inside body there are
-          title and actions parts
+        <p >
+          <span className="font-bold">subject:</span> {post.subject}
+        </p>
+        <p className="font-bold">
+         Duration: {post.duration} hours
         </p>
         <div className="card-actions justify-end">
-          <button className="btn btn-accent text-white">Apply</button>
+          {
+            userData ? <Link to="/tuitions" className="btn btn-accent text-white">View</Link> :  <Link to="/login" className="btn btn-accent text-white">View</Link>
+          }
+          
         </div>
       </motion.div>
     </motion.div>

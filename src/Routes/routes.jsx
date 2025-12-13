@@ -31,6 +31,9 @@ import TutorSessions from "../Pages/Dashboard/tutor-dashboard/TutorSessions";
 import Reports from "../Pages/Dashboard/admin-dashboard/Reports";
 import StudentReports from "../Pages/Dashboard/student-dashboard/StudentReports";
 import TutorReport from "../Pages/Dashboard/tutor-dashboard/TutorReport";
+import TutorsPage from "../Pages/TuitorsPage/TutorsPage";
+import UnderConstruction from "../Pages/UnderConstructionPage/UnderConstruction";
+import PublicTutorPage from "../Pages/PublicTutorPage/PublicTutorPage";
 
 const router = createBrowserRouter([
   {
@@ -56,6 +59,14 @@ const router = createBrowserRouter([
       {
         path: "/tuitions",
         element: <Tuitions/>,
+      },
+      {
+        path: "/tutors",
+        element: <TutorsPage/>,
+      },
+      {
+        path: "/tutor/:id",
+        element: <PublicTutorPage/>,
       },
     ],
   },
