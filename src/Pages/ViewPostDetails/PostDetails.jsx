@@ -14,10 +14,11 @@ import {
 import { AuthContext } from "../../Context/AuthContextProvider";
 import useAxiosSecure from "../../AxiosInstance/AxiosSecureInstance";
 import toast from "react-hot-toast";
+import Swal from "sweetalert2";
 
 const PostDetails = () => {
   const { id } = useParams();
-  const { userData, setUserData } = useContext(AuthContext); 
+  const { userData, setUserData } = useContext(AuthContext);
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
 
@@ -116,58 +117,67 @@ const PostDetails = () => {
   };
 
   const handleDelete = async () => {
-    
-    if (
-      window.confirm(
-        "Are you sure you want to delete this post? This cannot be undone."
-      )
-    ) {
-      try {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
         const res = await axiosSecure.delete(`/posts/${id}`);
         if (res.data.success) {
           toast.success("Post deleted successfully");
           navigate("/student-dashboard/studenttuitionposts");
         }
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your file has been deleted.",
+          icon: "success",
+        });
       } catch (err) {
         toast.error(err.response?.data?.message || "Failed to delete post");
       }
-    }
+        
+      }
+    });
+    
   };
 
-const handleProfileUpdate = async (e) => {
+  const handleProfileUpdate = async (e) => {
     e.preventDefault();
     try {
-        const res = await axiosSecure.patch("/users/me", {
-            tutorData: {
-                ...userData.tutorData, 
-                bio: updateFormData.bio,
-                qualifications: updateFormData.qualifications,
-                hourlyRate: Number(updateFormData.hourlyRate),
-                phone: updateFormData.phone
-            },
-           
-        });
+      const res = await axiosSecure.patch("/users/me", {
+        tutorData: {
+          ...userData.tutorData,
+          bio: updateFormData.bio,
+          qualifications: updateFormData.qualifications,
+          hourlyRate: Number(updateFormData.hourlyRate),
+          phone: updateFormData.phone,
+        },
+      });
 
-        if(res.data.success) {
-            toast.success("Profile Updated! Waiting for Admin Approval.");
-            
-            const updatedUser = { 
-                ...userData, 
-                tutorData: {
-                    ...userData.tutorData,
-                    ...updateFormData
-                }
-            };
-            setUserData(updatedUser);
-            setShowUpdateModal(false);
-        }
+      if (res.data.success) {
+        toast.success("Profile Updated! Waiting for Admin Approval.");
+
+        const updatedUser = {
+          ...userData,
+          tutorData: {
+            ...userData.tutorData,
+            ...updateFormData,
+          },
+        };
+        setUserData(updatedUser);
+        setShowUpdateModal(false);
+      }
     } catch (err) {
-        console.error(err);
-        toast.error("Failed to update profile");
+      console.error(err);
+      toast.error("Failed to update profile");
     }
   };
-
-
 
   if (loading)
     return (
@@ -184,7 +194,6 @@ const handleProfileUpdate = async (e) => {
 
   return (
     <div className="min-h-screen bg-base-100 p-6 md:p-10 max-w-6xl mx-auto mt-16">
-      
       <div className="flex flex-col md:flex-row justify-between items-start gap-4 mb-8">
         <div>
           <div className="flex items-center gap-2 mb-2">
@@ -227,7 +236,6 @@ const handleProfileUpdate = async (e) => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-       
         <div className="lg:col-span-2 space-y-6">
           <div className="card bg-base-200 shadow-sm">
             <div className="card-body">
@@ -387,45 +395,48 @@ const handleProfileUpdate = async (e) => {
               <div className="divider"></div>
 
               {isTutor ? (
-                        userData.status === 'requested' ? (
-                            
-                            isProfileComplete ? (
-                                
-                                <button disabled className="btn btn-disabled w-full text-base-content/50">
-                                    <FaHourglassHalf /> Waiting for Admin Approval
-                                </button>
-                            ) : (
-                                
-                                <button 
-                                    onClick={() => setShowUpdateModal(true)}
-                                    className="btn btn-warning w-full text-lg text-white"
-                                >
-                                    <FaUserEdit /> Update Your Profile
-                                </button>
-                            )
-                        ) : (
-                            
-                            <button 
-                                onClick={handleApply}
-                                className={`btn w-full text-lg ${
-                                    applicationStatus === 'rejected' ? 'bg-red-700 text-white' : 'btn-primary'
-                                }`}
-                                disabled={userData.status !== 'active' || applicationStatus !== null}
-                            >
-                                {userData.status === 'pending' 
-                                    ? "Account Pending Approval" 
-                                    : applicationStatus === 'rejected' 
-                                        ? "Application Rejected" 
-                                        : applicationStatus 
-                                            ? "Already Applied" 
-                                            : "Apply Now"
-                                }
-                            </button>
-                        )
-                    ) : !isAuthor ? (
-                        <div className="alert alert-info text-sm">Only Tutors can apply.</div>
-                    ) : null}
-              
+                userData.status === "requested" ? (
+                  isProfileComplete ? (
+                    <button
+                      disabled
+                      className="btn btn-disabled w-full text-base-content/50"
+                    >
+                      <FaHourglassHalf /> Waiting for Admin Approval
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => setShowUpdateModal(true)}
+                      className="btn btn-warning w-full text-lg text-white"
+                    >
+                      <FaUserEdit /> Update Your Profile
+                    </button>
+                  )
+                ) : (
+                  <button
+                    onClick={handleApply}
+                    className={`btn w-full text-lg ${
+                      applicationStatus === "rejected"
+                        ? "bg-red-700 text-white"
+                        : "btn-primary"
+                    }`}
+                    disabled={
+                      userData.status !== "active" || applicationStatus !== null
+                    }
+                  >
+                    {userData.status === "pending"
+                      ? "Account Pending Approval"
+                      : applicationStatus === "rejected"
+                      ? "Application Rejected"
+                      : applicationStatus
+                      ? "Already Applied"
+                      : "Apply Now"}
+                  </button>
+                )
+              ) : !isAuthor ? (
+                <div className="alert alert-info text-sm">
+                  Only Tutors can apply.
+                </div>
+              ) : null}
             </div>
           </div>
         </div>
@@ -493,7 +504,6 @@ const handleProfileUpdate = async (e) => {
                   }
                 />
               </div>
-              
 
               <div className="modal-action">
                 <button
