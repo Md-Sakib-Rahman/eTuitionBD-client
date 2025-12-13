@@ -1,50 +1,88 @@
 import React, { useContext } from 'react'
+import { Link } from 'react-router'
 import { AuthContext } from '../../../Context/AuthContextProvider'
+import Logo from '../../../assets/Logo.png' 
 
 const Footer = () => {
-  const {loader} = useContext(AuthContext)
+  const { loader } = useContext(AuthContext)
+  
   return (
     <footer className={`footer rounded-2xl sm:footer-horizontal bg-base-200 text-base-content p-10 w-[90%] mx-auto ${loader ? "hidden" : ""}`}>
-  <aside>
-    <svg
-      width="50"
-      height="50"
-      viewBox="0 0 24 24"
-      xmlns="http://www.w3.org/2000/svg"
-      fillRule="evenodd"
-      clipRule="evenodd"
-      className="fill-current">
-      <path
-        d="M22.672 15.226l-2.432.811.841 2.515c.33 1.019-.209 2.127-1.23 2.456-1.15.325-2.148-.321-2.463-1.226l-.84-2.518-5.013 1.677.84 2.517c.391 1.203-.434 2.542-1.831 2.542-.88 0-1.601-.564-1.86-1.314l-.842-2.516-2.431.809c-1.135.328-2.145-.317-2.463-1.229-.329-1.018.211-2.127 1.231-2.456l2.432-.809-1.621-4.823-2.432.808c-1.355.384-2.558-.59-2.558-1.839 0-.817.509-1.582 1.327-1.846l2.433-.809-.842-2.515c-.33-1.02.211-2.129 1.232-2.458 1.02-.329 2.13.209 2.461 1.229l.842 2.515 5.011-1.677-.839-2.517c-.403-1.238.484-2.553 1.843-2.553.819 0 1.585.509 1.85 1.326l.841 2.517 2.431-.81c1.02-.33 2.131.211 2.461 1.229.332 1.018-.21 2.126-1.23 2.456l-2.433.809 1.622 4.823 2.433-.809c1.242-.401 2.557.484 2.557 1.838 0 .819-.51 1.583-1.328 1.847m-8.992-6.428l-5.01 1.675 1.619 4.828 5.011-1.674-1.62-4.829z"></path>
-    </svg>
-    <p>
-      ACME Industries Ltd.
-      <br />
-      Providing reliable tech since 1992
-    </p>
-  </aside>
-  <nav>
-    <h6 className="footer-title">Services</h6>
-    <a className="link link-hover">Branding</a>
-    <a className="link link-hover">Design</a>
-    <a className="link link-hover">Marketing</a>
-    <a className="link link-hover">Advertisement</a>
-  </nav>
-  <nav>
-    <h6 className="footer-title">Company</h6>
-    <a className="link link-hover">About us</a>
-    <a className="link link-hover">Contact</a>
-    <a className="link link-hover">Jobs</a>
-    <a className="link link-hover">Press kit</a>
-  </nav>
-  <nav>
-    <h6 className="footer-title">Legal</h6>
-    <a className="link link-hover">Terms of use</a>
-    <a className="link link-hover">Privacy policy</a>
-    <a className="link link-hover">Cookie policy</a>
-  </nav>
-</footer>
+      <aside>
+        <Link to="/">
+            <img src={Logo} alt="eTuitionBd Logo" className="w-12 h-12" />
+        </Link>
+        <p className="font-bold text-lg">
+          eTuitionBd
+        </p>
+        <p className="max-w-xs text-sm opacity-80">
+          A complete platform where students and tutors connect with the least amount of barrier.
+        </p>
+        <p className="text-xs mt-4 opacity-60">
+          Copyright © {new Date().getFullYear()} - All rights reserved
+        </p>
+      </aside>
+
+      <nav>
+        <h6 className="footer-title">Quick Links</h6>
+        <Link to="/" className="link link-hover">Home</Link>
+        <Link to="/tuitions" className="link link-hover">Tuitions</Link>
+        <Link to="/tutors" className="link link-hover">Tutors</Link>
+        <Link to="/about" className="link link-hover">About Us</Link>
+      </nav>
+
+      <nav>
+        <h6 className="footer-title">Contact</h6>
+        <div className="flex flex-col gap-2">
+            <span className="text-sm">Dhaka, Bangladesh</span>
+            <span className="link link-hover text-sm">support@etuitionbd.com</span>
+            <span className="text-sm">+880 123 456 789</span>
+        </div>
+      </nav>
+
+      <nav>
+        <h6 className="footer-title">Social</h6>
+        <div className="grid grid-flow-col gap-4">
+       
+          <a href="#" target="_blank" rel="noopener noreferrer">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              className="fill-current">
+              <path
+                d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"></path>
+            </svg>
+          </a>
+
+ 
+          <a href="#" target="_blank" rel="noopener noreferrer">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              className="fill-current">
+               <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z" />
+            </svg>
+          </a>
+ 
+          <a href="#" target="_blank" rel="noopener noreferrer">
+             <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                width="24" 
+                height="24" 
+                viewBox="0 0 24 24"
+                className="fill-current">
+                <path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h5v-8.306c0-4.613 5.432-5.185 5.432-1.028v9.334h5v-9.754c0-5.275-5.617-5.071-7.258-2.428v-2.818z"/>
+            </svg>
+          </a>
+        </div>
+      </nav>
+    </footer>
   )
 }
 
 export default Footer
+

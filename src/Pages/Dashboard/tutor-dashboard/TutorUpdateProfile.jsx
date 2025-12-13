@@ -51,7 +51,9 @@ const TutorUpdateProfile = () => {
     };
 
     try {
-      const res = await axiosSecure.patch("/users/me", updatePayload);
+      const url = `${import.meta.env.VITE_BACKEND_URL}/users/me`;
+      const res = await axiosSecure.patch(url, updatePayload);
+      // const res = await axiosSecure.patch("/users/me", updatePayload);
 
       if (res.data.success) {
        
@@ -76,6 +78,9 @@ const TutorUpdateProfile = () => {
         navigate("/tutor-dashboard");
       }
     } catch (err) {
+      console.log("Error URL:", err.config?.url); 
+      console.log("Error Response:", err.response?.data);
+
       console.error("Update Failed:", err);
     } finally {
       setSaving(false);

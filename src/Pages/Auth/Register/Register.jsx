@@ -85,38 +85,69 @@ const Register = () => {
       setLoader(false);
     }
   };
-  const handleGoogleSignIn = () => {
-    signInWithGoogle()
-      .then(async (result) => {
-        console.log(" Success Login! ", result);
-        const user = result.user;
-        const token = await user.getIdToken();
-        await saveToDB(
-          {
-            name: result.user.displayName,
-            email: result.user.email,
-            image: result.user.photoURL,
-            role: "student",
-          },
-          token
-        );
-        Swal.fire({
-                  position: "top-end",
-                  width: 400,
-                  height: 300,
-                  theme:"dark", 
-                  icon: "success",
-                  title: "Login Success !",
-                  showConfirmButton: false,
-                  timer: 1500,
-                });
-        navigate(state);
-      })
-      .catch((err) => {
-        console.log("the Erorr: ", err);
-        setLoader(false)
-      });
+  const handleGoogleSignIn = async () => {
+    try {
+      // 1. Sign in with Firebase
+      const result = await signInWithGoogle();
+      const user = result.user;
+
+      // 2. Prepare User Info for your Database
+      // Note: You might want to ask the user for their Role (Student/Tutor) 
+      // before this step, or default it to "student".
+      const userInfo = {
+        name: user.displayName,
+        email: user.email,
+        image: user.photoURL,
+        role: "student", // Default role (or prompt user to select one)
+        status: "active",
+      };
+
+      // 3. Get the token specifically for the backend request
+      const token = await user.getIdToken();
+
+      // 4. Save to Database using the function from your Context
+      await saveToDB(userInfo, token);
+
+      
+      navigate("/"); // Redirect to home
+      
+    } catch (err) {
+      console.error(err);
+      
+    }
   };
+  // const handleGoogleSignIn = () => {
+  //   signInWithGoogle()
+  //     .then(async (result) => {
+  //       console.log(" Success Login! ", result);
+  //       const user = result.user;
+  //       const token = await user.getIdToken();
+  //       await saveToDB(
+  //         {
+  //           name: result.user.displayName,
+  //           email: result.user.email,
+  //           image: result.user.photoURL,
+  //           role: "student",
+  //         },
+  //         token
+  //       );
+  //       Swal.fire({
+  //                 position: "top-end",
+  //                 width: 400,
+  //                 height: 300,
+  //                 theme:"dark", 
+  //                 icon: "success",
+  //                 title: "Login Success !",
+  //                 showConfirmButton: false,
+  //                 timer: 1500,
+  //               });
+  //      navigate(`/`)
+  //     })
+  //     .catch((err) => {
+  //       console.log("the Erorr: ", err);
+  //       setLoader(false)
+  //     });
+  // };
 
   useEffect(() => {
     if (userData?.uid) {

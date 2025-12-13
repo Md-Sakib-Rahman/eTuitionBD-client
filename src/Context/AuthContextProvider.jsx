@@ -39,25 +39,76 @@ const AuthContextProvider = ({ children }) => {
     return updateProfile(auth.currentUser, updatedData);
   };
   const saveToDB = async (userInfo, token) => {
+     
     await axiosPublic
-      .post(`/users`, userInfo , {
-        
-         headers: {
-           authorization: `Bearer ${token}`
-         }
+      .post(`/users`, userInfo, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
       })
       .then((res) => {
-        console.log(res);
+        console.log("User Saved to DB:", res.data);
+
+         return axios.post(
+          `${import.meta.env.VITE_BACKEND_URL}/jwt`,
+          { email: userInfo.email },
+          {
+            withCredentials: true,
+            headers: { authorization: `Bearer ${token}` },
+          }
+        );
+      })
+      .then(() => {
+         
+        return axios.get(`${import.meta.env.VITE_BACKEND_URL}/my-user`, {
+          withCredentials: true,
+        });
+      })
+      .then((res) => {
+         
+        const fullUserData = {
+            ...auth.currentUser,
+            ...res.data
+        };
+        setUserData(fullUserData);
+        setLoader(false);
       })
       .catch((err) => {
-        axios.post(`${import.meta.env.VITE_BACKEND_URL}/logout`, {}, { withCredentials: true })
-            .then(() => {
-                 setUserData(null);
-                 setLoader(false);
-            });
-        console.log(err);
+        console.log("SaveToDB Error:", err);
+         
+        axios
+          .post(
+            `${import.meta.env.VITE_BACKEND_URL}/logout`,
+            {},
+            { withCredentials: true }
+          )
+          .then(() => {
+            setUserData(null);
+            setLoader(false);
+          });
       });
   };
+  // const saveToDB = async (userInfo, token) => {
+  //   await axiosPublic
+  //     .post(`/users`, userInfo , {
+        
+  //        headers: {
+  //          authorization: `Bearer ${token}`
+  //        }
+  //     })
+  //     .then((res) => {
+  //       console.log(res);
+        
+  //     })
+  //     .catch((err) => {
+  //       axios.post(`${import.meta.env.VITE_BACKEND_URL}/logout`, {}, { withCredentials: true })
+  //           .then(() => {
+  //                setUserData(null);
+  //                setLoader(false);
+  //           });
+  //       console.log(err);
+  //     });
+  // };
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
         if (user) {

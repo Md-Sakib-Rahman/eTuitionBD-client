@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FaCheckCircle, FaChalkboardTeacher, FaEnvelope, FaClock } from "react-icons/fa";
 import useAxiosSecure from "../../../AxiosInstance/AxiosSecureInstance";
 import toast from "react-hot-toast";
+import Swal from "sweetalert2";
 
 const MySessions = () => {
   const axiosSecure = useAxiosSecure();
@@ -26,13 +27,17 @@ const MySessions = () => {
 
   
   const handleCompleteSession = async (sessionId) => {
-    const isConfirmed = window.confirm(
-      "Are you sure the tuition is finished? This will release the payment to the tutor. This cannot be undone."
-    );
-
-    if (!isConfirmed) return;
-
-    try {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Complete !",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
       const res = await axiosSecure.patch(`/sessions/${sessionId}/complete`);
       
       if (res.data.success) {
@@ -51,6 +56,31 @@ const MySessions = () => {
       console.error("Completion Error:", error);
       toast.error(error.response?.data?.message || "Failed to complete session");
     }
+        
+      }
+    });
+
+    
+
+    // try {
+    //   const res = await axiosSecure.patch(`/sessions/${sessionId}/complete`);
+      
+    //   if (res.data.success) {
+    //     toast.success("Session completed! Funds released.");
+        
+        
+    //     setSessions((prevSessions) =>
+    //       prevSessions.map((session) =>
+    //         session._id === sessionId
+    //           ? { ...session, status: "completed", isMoneyReleased: true }
+    //           : session
+    //       )
+    //     );
+    //   }
+    // } catch (error) {
+    //   console.error("Completion Error:", error);
+    //   toast.error(error.response?.data?.message || "Failed to complete session");
+    // }
   };
 
   if (loading) {

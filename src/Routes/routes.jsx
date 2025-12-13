@@ -36,11 +36,13 @@ import UnderConstruction from "../Pages/UnderConstructionPage/UnderConstruction"
 import PublicTutorPage from "../Pages/PublicTutorPage/PublicTutorPage";
 import About from "../Pages/About/About";
 import Contact from "../Pages/Contact/Contact";
+import ErrorPage from "../ErrorPage/ErrorPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
+    errorElement: <ErrorPage/>,
     children: [
       {
         path: "/",
