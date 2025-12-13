@@ -35,6 +35,7 @@ import TutorsPage from "../Pages/TuitorsPage/TutorsPage";
 import UnderConstruction from "../Pages/UnderConstructionPage/UnderConstruction";
 import PublicTutorPage from "../Pages/PublicTutorPage/PublicTutorPage";
 import About from "../Pages/About/About";
+import Contact from "../Pages/Contact/Contact";
 
 const router = createBrowserRouter([
   {
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
       {
         path: "/about",
         element: <About/>,
+      },
+      {
+        path: "/contact",
+        element: <Contact/>,
       },
       {
         path: "/post-details/:id",
