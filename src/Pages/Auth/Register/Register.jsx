@@ -5,6 +5,7 @@ import gradientBg from "../../../assets/Banner/Gradiant.png";
 import { AuthContext } from "../../../Context/AuthContextProvider";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import LoadingSpinner from "../../../Components/GlobalLoader";
 const Register = () => {
   const {
     userData,
@@ -111,6 +112,10 @@ const Register = () => {
       navigate(state, { replace: true });
     }
   }, [userData, navigate, state]);
+
+  if (loader) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <div

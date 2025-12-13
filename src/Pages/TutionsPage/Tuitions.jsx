@@ -3,6 +3,7 @@ import axios from "axios";
 import { FaSearch } from "react-icons/fa";
 import TuitionCard from "./TuitionCard/TuitionCard";
 
+import LoadingSpinner from "../../Components/GlobalLoader";
 const Tuitions = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -56,11 +57,7 @@ const Tuitions = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   if (loading) {
-    return (
-      <div className="min-h-screen flex justify-center items-center">
-        <span className="loading loading-spinner loading-lg text-primary"></span>
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   return (

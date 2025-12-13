@@ -69,6 +69,7 @@ const router = createBrowserRouter([
       {
         path: "/tuitions",
         element: <Tuitions/>,
+        
       },
       {
         path: "/tutors",
