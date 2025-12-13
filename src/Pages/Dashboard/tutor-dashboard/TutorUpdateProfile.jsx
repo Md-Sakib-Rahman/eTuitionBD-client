@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import { FaArrowLeft, FaSave } from "react-icons/fa";
 import { AuthContext } from "../../../Context/AuthContextProvider";
 import useAxiosSecure from "../../../AxiosInstance/AxiosSecureInstance"; 
+import Swal from "sweetalert2";
 
 const TutorUpdateProfile = () => {
   const { userData, setUserData, loader } = useContext(AuthContext);
@@ -62,6 +63,16 @@ const TutorUpdateProfile = () => {
 
         
         console.log("Success");
+        Swal.fire({
+                  position: "top-end",
+                  width: 400,
+                  height: 300,
+                  theme:"dark", 
+                  icon: "success",
+                  title: "Update Success !",
+                  showConfirmButton: false,
+                  timer: 1500,
+                });
         navigate("/tutor-dashboard");
       }
     } catch (err) {
