@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router";
 import { FaSave, FaArrowLeft, FaClock, FaMoneyBillWave } from "react-icons/fa";
 import useAxiosSecure from "../../../AxiosInstance/AxiosSecureInstance";
 import toast from "react-hot-toast";
+import Swal from "sweetalert2";
 
 const EditPost = () => {
   const { id } = useParams(); 
@@ -60,6 +61,16 @@ const EditPost = () => {
         toast.success("Post Updated Successfully!");
         navigate(`/student-dashboard/post-details/${id}`);
       }
+      Swal.fire({
+                position: "top-end",
+                width: 400,
+                height: 300,
+                theme:"dark", 
+                icon: "success",
+                title: "Update Success !",
+                showConfirmButton: false,
+                timer: 1500,
+              });
     } catch (err) {
       console.error(err);
       toast.error(err.response?.data?.message || "Failed to update post");
