@@ -34,6 +34,7 @@ import TutorReport from "../Pages/Dashboard/tutor-dashboard/TutorReport";
 import TutorsPage from "../Pages/TuitorsPage/TutorsPage";
 import UnderConstruction from "../Pages/UnderConstructionPage/UnderConstruction";
 import PublicTutorPage from "../Pages/PublicTutorPage/PublicTutorPage";
+import About from "../Pages/About/About";
 
 const router = createBrowserRouter([
   {
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
       {
         path: "/register",
         element: <Register/>,
+      },
+      {
+        path: "/about",
+        element: <About/>,
       },
       {
         path: "/post-details/:id",
