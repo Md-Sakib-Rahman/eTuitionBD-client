@@ -6,6 +6,7 @@ import { AuthContext } from "../../../Context/AuthContextProvider";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import LoadingSpinner from "../../../Components/GlobalLoader";
+import Swal from "sweetalert2";
 const Register = () => {
   const {
     userData,
@@ -99,6 +100,16 @@ const Register = () => {
           },
           token
         );
+        Swal.fire({
+                  position: "top-end",
+                  width: 400,
+                  height: 300,
+                  theme:"dark", 
+                  icon: "success",
+                  title: "Login Success !",
+                  showConfirmButton: false,
+                  timer: 1500,
+                });
         navigate(state);
       })
       .catch((err) => {

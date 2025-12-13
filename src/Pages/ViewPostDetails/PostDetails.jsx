@@ -116,6 +116,7 @@ const PostDetails = () => {
   };
 
   const handleDelete = async () => {
+    
     if (
       window.confirm(
         "Are you sure you want to delete this post? This cannot be undone."
