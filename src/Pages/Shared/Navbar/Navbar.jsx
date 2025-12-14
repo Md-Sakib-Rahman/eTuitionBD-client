@@ -39,7 +39,7 @@ const Navbar = () => {
     }
   }
 
-  // Defined as 'navLinks' (CamelCase)
+  
   const navLinks = [
     { path: "/", label: "Home" },
     { path: "/tuitions", label: "Tuitions" },
@@ -158,9 +158,7 @@ const Navbar = () => {
                   <span className="badge">New</span>
                 </Link>
               </li>
-              <li>
-                <Link to="/profile">Profile</Link>
-              </li>
+              
               <li>
                 <button onClick={LogUserOut} className="btn text-red-400">
                   Logout
