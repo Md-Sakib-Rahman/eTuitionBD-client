@@ -41,7 +41,7 @@ const TutorCard = ({ tutor }) => {
 
           {/* Identity Header */}
           <div className="mb-4">
-            <h2 className="text-xl font-black text-white tracking-tight group-hover:text-primary transition-colors">
+            <h2 className="text-xl font-black text-base tracking-tight group-hover:text-primary transition-colors">
               {tutor.name}
             </h2>
             <div className="flex items-center justify-center gap-1.5 text-accent mt-1">
@@ -58,7 +58,7 @@ const TutorCard = ({ tutor }) => {
               <FaGraduationCap className="text-sm" />
               <span className="text-[10px] uppercase font-black tracking-widest text-gray-400">Education</span>
             </div>
-            <p className="text-xs text-white font-medium line-clamp-1">
+            <p className="text-xs text-base font-medium line-clamp-1">
               {tutor.tutorData?.qualifications || "Verified Tutor"}
             </p>
           </div>
@@ -67,7 +67,7 @@ const TutorCard = ({ tutor }) => {
           <div className="flex justify-between w-full mb-6">
             <div className="text-left">
               <p className="text-[10px] uppercase text-gray-500 font-bold tracking-tighter">Experience</p>
-              <p className="text-sm font-bold text-white">{tutor.tutorData?.experience || "3+"} Years</p>
+              <p className="text-sm font-bold text-base">{tutor.tutorData?.experience || "3+"} Years</p>
             </div>
             <div className="text-right">
               <p className="text-[10px] uppercase text-gray-500 font-bold tracking-tighter">Rate</p>
