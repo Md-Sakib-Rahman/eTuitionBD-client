@@ -1,59 +1,93 @@
 import React from "react";
-import { FaMoneyBillWave, FaClock, FaMapMarkerAlt } from "react-icons/fa";
+import { motion } from "framer-motion";
+import { FaMoneyBillWave, FaClock, FaMapMarkerAlt, FaLayerGroup, FaChevronRight } from "react-icons/fa";
 import { Link } from "react-router"; 
 
 const TuitionCard = ({ post }) => {
   return (
-    <div className="card bg-base-100 shadow-xl border border-base-200 hover:shadow-2xl transition-all duration-300">
-      <div className="card-body">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
+      viewport={{ once: true }}
+      whileHover={{ y: -5 }}
+      className="group relative w-full"
+    >
+      {/* Subtle Glow Background on Hover */}
+      <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-secondary opacity-0 group-hover:opacity-20 transition duration-500 blur-sm rounded-[--radius-box]"></div>
+
+      <div className="relative card bg-base-200 border border-white/5 group-hover:border-primary/40 rounded-[--radius-box] shadow-xl overflow-hidden transition-all duration-300">
         
-        {/* Top Row: Medium & Date */}
-        <div className="flex justify-between items-start">
-          <div className="badge badge-primary badge-outline text-xs mb-2">
-            {post.medium}
-          </div>
-          <span className="text-xs text-base-content/50">
-            {new Date(post.createdAt).toLocaleDateString()}
-          </span>
-        </div>
-
-        {/* Title & Grade */}
-        <h2 className="card-title text-2xl text-primary">{post.subject}</h2>
-        <p className="font-semibold text-lg">{post.classGrade}</p>
-
-        <div className="divider my-2"></div>
-
-        <div className="space-y-2 text-sm text-base-content/80">
-          
-          {/* LOCATION (Required for Challenge #4) */}
-          <div className="flex items-center gap-2">
-            <FaMapMarkerAlt className="text-error" />
-            <span className="capitalize">{post.area}, {post.district}</span>
+        <div className="card-body p-6">
+          {/* Header Section */}
+          <div className="flex justify-between items-start mb-4">
+            <div className="badge badge-primary badge-outline text-[10px] font-black uppercase tracking-widest px-3 py-3 border-opacity-30">
+              {post.medium}
+            </div>
+            <div className="flex flex-col items-end">
+               <span className="text-[10px] uppercase font-bold text-base-content/40 tracking-tighter">Posted On</span>
+               <span className="text-xs font-bold text-base-content/70">
+                {new Date(post.createdAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short' })}
+              </span>
+            </div>
           </div>
 
-          <div className="flex items-center gap-2">
-            <FaMoneyBillWave className="text-success" />
-            <span className="font-bold">{post.budget} USD</span>
+          {/* Title & Subject */}
+          <div className="mb-6">
+            <h2 className="text-2xl font-black text-base tracking-tighter group-hover:text-primary transition-colors leading-tight">
+              {post.subject}
+            </h2>
+            <div className="flex items-center gap-2 mt-1 text-base-content/60">
+              <FaLayerGroup className="text-xs text-secondary" />
+              <span className="text-sm font-semibold">{post.classGrade}</span>
+            </div>
           </div>
-          
-          <div className="flex items-center gap-2">
-            <FaClock className="text-info" />
-            <span>{post.duration} Hours</span>
-          </div>
-        </div>
 
-        {/* Action Button */}
-        <div className="card-actions justify-end mt-4">
-          <Link
-            // Updated to the shared route we discussed
-            to={`/post-details/${post._id}`}
-            className="btn btn-primary w-full"
-          >
-            View Details
-          </Link>
+          {/* Professional Info Grid */}
+          <div className="grid grid-cols-2 gap-4 py-4 border-y border-white/5">
+            {/* Budget */}
+            <div className="space-y-1">
+              <p className="text-[10px] uppercase font-black text-gray-500 tracking-widest">Budget</p>
+              <div className="flex items-center gap-2">
+                <FaMoneyBillWave className="text-success text-xs" />
+                <span className="text-sm font-bold text-base">${post.budget}</span>
+              </div>
+            </div>
+
+            {/* Duration */}
+            <div className="space-y-1 text-right">
+              <p className="text-[10px] uppercase font-black text-gray-500 tracking-widest">Duration</p>
+              <div className="flex items-center gap-2 justify-end">
+                <span className="text-sm font-bold text-base">{post.duration} hrs/wk</span>
+                <FaClock className="text-info text-xs" />
+              </div>
+            </div>
+
+            {/* Location - Spans 2 columns */}
+            <div className="col-span-2 pt-2">
+              <p className="text-[10px] uppercase font-black text-gray-500 tracking-widest mb-1">Location</p>
+              <div className="flex items-center gap-2 text-base-content/80">
+                <FaMapMarkerAlt className="text-error text-xs" />
+                <span className="text-sm font-medium truncate">
+                  {post.area}, {post.district}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Action Button */}
+          <div className="card-actions mt-6">
+            <Link
+              to={`/post-details/${post._id}`}
+              className="btn btn-primary btn-sm w-full group/btn rounded-[--radius-field] font-black uppercase tracking-widest text-[10px] h-10"
+            >
+              Examine Post
+              <FaChevronRight className="ml-2 group-hover/btn:translate-x-1 transition-transform" />
+            </Link>
+          </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

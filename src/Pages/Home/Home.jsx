@@ -11,10 +11,10 @@ const Home = () => {
   return (
     <div className='mb-10'>
       <Banner/>
+      <WhyChooseUs/>
+      <HowItWorks/>
       <LatestSection title="Latest Tuition Posts" />
       <LatestTutorSection title="Latest Tutor Posts" />
-      <HowItWorks/>
-      <WhyChooseUs/>
     </div>
   )
 }

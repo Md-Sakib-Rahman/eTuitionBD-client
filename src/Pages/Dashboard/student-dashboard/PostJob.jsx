@@ -180,7 +180,7 @@ const PostJob = () => {
                   {...register("duration", {
                     required: "Duration is required",
                     min: { value: 1, message: "Min 1 hour" },
-                    max: { value: 5, message: "Max 5 hours" },
+                    max: { value: 35, message: "Max 35 hours" },
                   })}
                 />
               </div>
