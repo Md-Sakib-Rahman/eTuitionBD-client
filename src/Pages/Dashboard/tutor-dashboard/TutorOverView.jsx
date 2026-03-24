@@ -20,7 +20,7 @@ import useAxiosSecure from "../../../AxiosInstance/AxiosSecureInstance";
 const TutorOverView = () => {
   const { userData, loader } = useContext(AuthContext);
   const axiosSecure = useAxiosSecure();
-  
+  console.log(userData)
   const [stats, setStats] = useState({
     pendingBalance: 0,
     totalEarnings: 0,

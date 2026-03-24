@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import TutorCard from './TutorCard'
 import axios from 'axios'
+import LoadingSpinner from './GlobalLoader'
 
 const LatestTutorSection = ({title}) => {
    
       const [tutors, setTutorsData] = useState([])
+      const [isloading, setIsLoading] = useState(true)
   useEffect(()=>{
         const getRecentPost = async ()=>{
           try{
@@ -24,7 +26,7 @@ const LatestTutorSection = ({title}) => {
             } else {
                setTutorsData([])
             }
-            
+            setIsLoading(false)
           } catch(err){
             console.log(err)
             setTutorsData([])  
@@ -33,6 +35,11 @@ const LatestTutorSection = ({title}) => {
         getRecentPost()
       },[])
   
+  if (isloading) {
+    return <div className="min-h-screen flex justify-center items-center ">
+        <span className="loading loading-spinner loading-lg text-primary"></span>
+    </div>
+  }
   return (
     <div>
       <h2 className='text-2xl font-bold mb-10'>{title}</h2>

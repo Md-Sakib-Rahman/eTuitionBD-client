@@ -1,11 +1,14 @@
 import React from "react";
 import { motion } from "motion/react";
 
-const LoadingSpinner = () => {
+const LoadingSpinner = ({ page = true }) => {
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center bg-base-100 z-50">
+    <div
+      className={`flex flex-col justify-center items-center bg-base-100 z-50 ${
+        page ? "min-h-screen w-full" : "py-10 w-full"
+      }`}
+    >
       <div className="relative flex justify-center items-center">
-        
         <motion.span
           className="block w-20 h-20 border-4 border-base-300 border-t-primary rounded-full box-border"
           animate={{ rotate: 360 }}
@@ -15,7 +18,7 @@ const LoadingSpinner = () => {
             ease: "linear",
           }}
         />
-         
+
         <motion.div
           className="absolute w-4 h-4 bg-primary rounded-full"
           animate={{ scale: [1, 1.5, 1], opacity: [1, 0.5, 1] }}
@@ -26,7 +29,7 @@ const LoadingSpinner = () => {
           }}
         />
       </div>
-     
+
       <motion.p
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

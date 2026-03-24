@@ -60,7 +60,8 @@ const AdminTuitionOverview = () => {
         try {
           await axiosSecure.delete(`/admin/tuitions/${id}`);
           Swal.fire("Deleted!", "Post has been removed.", "success");
-          navigate("/admin-dashboard/tuitions");
+          
+          navigate("/admin-dashboard/tuition-management");
         } catch (err) {
           toast.error("Failed to delete post");
         }

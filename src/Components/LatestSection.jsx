@@ -1,4 +1,4 @@
-  import React, { useContext, useEffect, useState } from 'react'
+  import React, { use, useContext, useEffect, useState } from 'react'
   import MinimalCard from './MinimalCard'
 import { AuthContext } from '../Context/AuthContextProvider'
 import useAxiosSecure from '../AxiosInstance/AxiosSecureInstance'
@@ -7,6 +7,7 @@ import axios from 'axios'
   const LatestSection = ({title}) => {
     const {userData} = useContext(AuthContext)
     const [posts, setPostsData] = useState([])
+    const [isloading, setIsLoading] = useState(true)
     useEffect(()=>{
       const getRecentPost = async ()=>{
         try{
@@ -20,10 +21,17 @@ import axios from 'axios'
           
         } catch(err){
           console.log(err)
+        }finally{
+          setIsLoading(false)
         }
       }
       getRecentPost()
     },[])
+    if (isloading) {
+    return <div className=" flex justify-center items-center ">
+        <span className="loading loading-spinner loading-lg text-primary"></span>
+    </div>
+  }
     return (
       <div>
         <h2 className='text-2xl font-bold mb-10'>{title}</h2>
