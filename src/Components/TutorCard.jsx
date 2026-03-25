@@ -15,7 +15,7 @@ const TutorCard = ({ tutor }) => {
       {/* Dynamic Glow Background */}
       <div className="absolute -inset-1 bg-gradient-to-b from-primary/40 to-secondary/10 opacity-0 group-hover:opacity-100 transition duration-500 blur-xl rounded-[--radius-box]"></div>
 
-      <div className="relative card bg-base-200 border border-white/5 group-hover:border-primary/30 rounded-[--radius-box] shadow-2xl overflow-hidden h-full">
+      <div className="relative card bg-base-200 border border-white/5 group-hover:border-primary/30 rounded-[--radius-box] shadow overflow-hidden h-full">
         
         {/* Top Accent Bar */}
         <div className="h-1.5 w-full bg-gradient-to-r from-primary via-secondary to-accent opacity-70"></div>

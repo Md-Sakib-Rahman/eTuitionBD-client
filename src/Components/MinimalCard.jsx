@@ -19,7 +19,7 @@ const MinimalCard = ({ post }) => {
       {/* Background Glow Effect on Hover */}
       <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-accent opacity-0 group-hover:opacity-30 transition duration-500 blur-sm rounded-[--radius-box]"></div>
 
-      <div className="relative card bg-base-200 border border-white/10 rounded-[--radius-box] shadow-2xl overflow-hidden">
+      <div className="relative card bg-base-200 border border-white/10 rounded-[--radius-box] shadow overflow-hidden">
         <div className="card-body p-6">
           
           {/* Header: User Info & Budget Badge */}
@@ -62,7 +62,7 @@ const MinimalCard = ({ post }) => {
               </div>
               <div>
                 <p className="text-[10px] uppercase text-gray-500 font-bold leading-none mb-1">Duration</p>
-                <p className="text-base font-medium text-sm leading-none">{post.duration} hrs/week</p>
+                <p className="text-base font-medium text-sm leading-none">{post.duration} hours</p>
               </div>
             </div>
 

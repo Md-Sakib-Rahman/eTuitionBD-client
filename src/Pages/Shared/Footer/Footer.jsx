@@ -7,7 +7,7 @@ const Footer = () => {
   const { loader } = useContext(AuthContext)
   
   return (
-    <footer className={`footer rounded-2xl sm:footer-horizontal bg-base-200 text-base-content p-10 w-[90%] mx-auto ${loader ? "hidden" : ""}`}>
+    <footer className={`footer rounded-2xl sm:footer-horizontal bg-base-200 text-base-content p-10 w-[90%] mx-auto max-w-[1280px] ${loader ? "hidden" : ""}`}>
       <aside>
         <Link to="/">
             <img src={Logo} alt="eTuitionBd Logo" className="w-12 h-12" />

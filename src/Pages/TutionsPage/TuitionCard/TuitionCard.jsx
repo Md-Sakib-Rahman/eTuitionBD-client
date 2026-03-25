@@ -58,7 +58,7 @@ const TuitionCard = ({ post }) => {
             <div className="space-y-1 text-right">
               <p className="text-[10px] uppercase font-black text-gray-500 tracking-widest">Duration</p>
               <div className="flex items-center gap-2 justify-end">
-                <span className="text-sm font-bold text-base">{post.duration} hrs/wk</span>
+                <span className="text-sm font-bold text-base">{post.duration} hour</span>
                 <FaClock className="text-info text-xs" />
               </div>
             </div>
