@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import Logo from "../../../assets/Logo.png";
-import { Link, NavLink } from "react-router";  
+import { Link, NavLink, useNavigate } from "react-router";
+import toast from "react-hot-toast";
 import ThemeContoller from "./themecontroller/ThemeContoller";
 import { ThemeContext } from "../../../Context/ThemeContextProvide";
 import { AuthContext } from "../../../Context/AuthContextProvider";
@@ -9,6 +10,7 @@ import { FaUserCircle, FaSignOutAlt, FaColumns } from "react-icons/fa";
 
 const Navbar = () => {
   const { userData, logout, setUserData, loader } = useContext(AuthContext);
+  const navigate = useNavigate();
   const { theme } = useContext(ThemeContext);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -37,9 +39,14 @@ const Navbar = () => {
   ];
 
   const handleLogout = async () => {
-    await logout();
-    setUserData(null);
-    closeDropdown();
+    try {
+      await logout();
+      setUserData(null);
+      closeDropdown();
+      navigate("/");
+    } catch (error) {
+      toast.error("Failed to log out. Please try again.");
+    }
   };
 
   return (
@@ -141,7 +148,7 @@ const Navbar = () => {
                 </li>
                 
                 <li>
-                  <button onClick={handleLogout} className="flex items-center gap-3 py-3 text-error hover:bg-error/10" onClick={closeDropdown}>
+                  <button onClick={handleLogout} className="flex items-center gap-3 py-3 text-error hover:bg-error/10">
                     <FaSignOutAlt />
                     <span className="font-bold">Secure Logout</span>
                   </button>
